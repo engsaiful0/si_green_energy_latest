@@ -199,6 +199,10 @@ class PageContentController extends Controller
 
     private function fieldRules(array $field, string $key, string $fileKey): array
     {
+        if (isset($field['max'])) {
+            return [$key => ['nullable', 'string', 'max:' . (int) $field['max']]];
+        }
+
         return match ($field['type'] ?? 'text') {
             'number' => [$key => ['nullable', 'numeric', 'min:0', 'max:1000000']],
             'textarea' => [$key => ['nullable', 'string', 'max:5000']],

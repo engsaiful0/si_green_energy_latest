@@ -128,7 +128,7 @@ class HomePage
                 'name' => 'Call to Action',
                 'description' => 'Phone call-to-action banner.',
                 'fields' => [
-                    'title' => ['label' => 'Title', 'type' => 'textarea', 'default' => "Planning a Solar System?\nTalk to Our Engineers Today"],
+                    'title' => ['label' => 'Title (one line)', 'type' => 'text', 'max' => 60, 'default' => 'Talk to Our Solar Engineers Today', 'help' => 'Shown on one line on desktop: keep it under about 40 characters.'],
                     'icon' => ['label' => 'Icon Class', 'type' => 'icon', 'default' => 'flaticon-phone-call'],
                     'contact_label' => ['label' => 'Contact Label', 'type' => 'text', 'default' => 'Call Si Green Energy'],
                     'phone' => ['label' => 'Phone', 'type' => 'text', 'default' => Company::PHONE],
@@ -207,6 +207,21 @@ class HomePage
                 ],
             ],
 
+            'gallery' => [
+                'name' => 'Gallery Carousel',
+                'source' => 'gallery',
+                'description' => 'Published gallery images marked "Show on homepage", in their homepage order. Managed under Gallery.',
+                'manage' => ['label' => 'Manage Homepage Images', 'route' => 'admin.gallery.home'],
+                'fields' => [
+                    'subtitle' => ['label' => 'Subtitle', 'type' => 'text', 'default' => 'Gallery'],
+                    'title' => ['label' => 'Title', 'type' => 'text', 'default' => 'Solar Work in Pictures'],
+                    'button_text' => ['label' => 'Button Text', 'type' => 'text', 'default' => 'View All Gallery'],
+                    'button_link' => ['label' => 'Button Link', 'type' => 'url', 'default' => '/gallery'],
+                    'limit' => ['label' => 'Maximum Images', 'type' => 'number', 'default' => 12],
+                    'autoplay_delay' => ['label' => 'Autoplay Delay (seconds)', 'type' => 'number', 'default' => 4],
+                ],
+            ],
+
             'team' => [
                 'name' => 'Team',
                 'source' => 'team',
@@ -260,7 +275,7 @@ class HomePage
                 'name' => 'Footer Call to Action',
                 'description' => 'Call-to-action box above the footer (same design as on every inner page).',
                 'fields' => [
-                    'title' => ['label' => 'Title', 'type' => 'textarea', 'default' => 'Get a Free Solar Consultation'],
+                    'title' => ['label' => 'Title (one line)', 'type' => 'text', 'max' => 60, 'default' => "Let's Build a Sustainable Energy Future", 'help' => 'Shown on one line on desktop: keep it under about 40 characters.'],
                     'text' => ['label' => 'Description', 'type' => 'textarea', 'default' => 'Share your location and electricity needs, and our engineers will recommend a solar system that suits your home or business.'],
                     'button_text' => ['label' => 'Button Text', 'type' => 'text', 'default' => 'Contact Us'],
                     'button_link' => ['label' => 'Button Link', 'type' => 'url', 'default' => '/contact'],

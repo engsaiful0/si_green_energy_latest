@@ -26,7 +26,7 @@ class CompanyProfilePage
     public static function cta(): array
     {
         return [
-            'title' => 'Talk to Our Solar Experts',
+            'title' => 'Contact Our Solar Engineering Team',
             'text' => 'Whether you are planning a rooftop system for your home or a larger installation for your business, we are happy to help.',
             'button_text' => 'Contact Si Green Energy',
         ];

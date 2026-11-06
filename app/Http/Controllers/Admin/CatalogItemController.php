@@ -134,6 +134,15 @@ abstract class CatalogItemController extends Controller
         if ($config['specifications'] ?? false) {
             $rules['specifications'] = ['nullable', 'string', 'max:5000'];
         }
+        if ($config['manufacturer'] ?? false) {
+            $rules += [
+                'brand' => ['nullable', 'string', 'max:100'],
+                'model' => ['nullable', 'string', 'max:255'],
+                'manufacturer_url' => ['nullable', 'url', 'max:500'],
+                'datasheet_url' => ['nullable', 'url', 'max:500'],
+                'source_url' => ['nullable', 'url', 'max:500'],
+            ];
+        }
         if ($config['price']) {
             $rules[$config['price']] = ['nullable', 'numeric', 'min:0', 'max:99999999'];
         }

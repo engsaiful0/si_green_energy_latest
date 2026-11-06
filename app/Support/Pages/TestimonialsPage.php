@@ -11,7 +11,7 @@ class TestimonialsPage extends ListingPage
 
     public static function cta(): array
     {
-        return ['title' => 'Ready to Start Your Solar Project?', 'text' => 'Talk to Si Green Energy about clean, reliable solar power for your home or business.', 'button_text' => 'Get a Free Solar Consultation'];
+        return ['title' => 'Start Your Solar Energy Journey', 'text' => 'Talk to Si Green Energy about clean, reliable solar power for your home or business.', 'button_text' => 'Get a Free Solar Consultation'];
     }
 
     protected static function title(): string

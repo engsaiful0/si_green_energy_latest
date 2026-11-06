@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Models\BlogPost;
+use App\Models\GalleryImage;
 use App\Models\Partner;
 use App\Models\Project;
 use App\Models\Service;
@@ -50,6 +51,7 @@ class SectionData
                 ->take($limit)->get(),
             'partners' => Partner::active()->orderBy('order')->orderBy('id')->take($limit)->get(),
             'blog' => BlogPost::published()->latest('publish_date')->take($limit)->get(),
+            'gallery' => GalleryImage::published()->onHome()->with('category')->take($limit)->get(),
             default => collect(),
         };
     }

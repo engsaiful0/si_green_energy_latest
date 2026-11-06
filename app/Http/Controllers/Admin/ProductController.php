@@ -31,6 +31,8 @@ class ProductController extends CatalogItemController
             'price' => 'price',
             'features_column' => 'features',
             'specifications' => true,
+            'manufacturer' => true,
+            'list_fields' => ['applications' => 'Applications'],
             'show_route' => false,
         ];
     }

@@ -27,7 +27,7 @@ class ContactPage
     public static function cta(): array
     {
         return [
-            'title' => 'Prefer to Talk? Call Si Green Energy',
+            'title' => 'Prefer to Talk? Call Our Team',
             'text' => 'Speak directly with our team about your solar project, a quotation or support for an existing system.',
             'button_text' => 'Call ' . Company::PHONE,
             'button_link' => 'tel:' . Company::PHONE,

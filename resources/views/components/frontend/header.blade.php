@@ -13,11 +13,12 @@
                 <div class="header__area-menubar-center-menu">
                     <ul id="mobilemenu">
                         <li class="{{ request()->routeIs('home') ? 'active' : '' }}"><a href="{{ route('home') }}">Home</a></li>
-                        <li class="menu-item-has-children {{ request()->routeIs('company-profile', 'testimonials', 'team.*') ? 'active' : '' }}"><a href="{{ route('company-profile') }}">About</a>
+                        <li class="menu-item-has-children {{ request()->routeIs('company-profile', 'testimonials', 'team.*', 'gallery') ? 'active' : '' }}"><a href="{{ route('company-profile') }}">About</a>
                             <ul class="sub-menu">
                                 <li><a href="{{ route('company-profile') }}">Company Profile</a></li>
                                 <li><a href="{{ route('testimonials') }}">Testimonial</a></li>
                                 <li><a href="{{ route('team.index') }}">Solar Design Engineer</a></li>
+                                <li><a href="{{ route('gallery') }}">Gallery</a></li>
                             </ul>
                         </li>
                         @foreach($navCatalogs as $catalog)

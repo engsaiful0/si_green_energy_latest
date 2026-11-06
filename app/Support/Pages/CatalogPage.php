@@ -38,9 +38,9 @@ abstract class CatalogPage
     public static function cta(): array
     {
         return match (static::route()) {
-            'products' => ['title' => 'Need Help Choosing the Right Equipment?', 'text' => 'Tell us what you want to power and we will recommend suitable panels, inverters and batteries.', 'button_text' => 'Request a Quotation'],
-            'solutions' => ['title' => 'Request a Solar Solution', 'text' => 'Share your site details and energy needs, and our engineers will propose a solution that fits.', 'button_text' => 'Request a Solution'],
-            default => ['title' => 'Get a Free Solar Consultation', 'text' => 'Talk to our engineers about design, installation or maintenance of your solar system.', 'button_text' => 'Book a Consultation'],
+            'products' => ['title' => 'Find the Right Solar Equipment', 'text' => 'Tell us what you want to power and we will recommend suitable panels, inverters and batteries.', 'button_text' => 'Request a Quotation'],
+            'solutions' => ['title' => 'Request a Tailored Solar Solution', 'text' => 'Share your site details and energy needs, and our engineers will propose a solution that fits.', 'button_text' => 'Request a Solution'],
+            default => ['title' => 'Power Your Business with Solar Energy', 'text' => 'Talk to our engineers about design, installation or maintenance of your solar system.', 'button_text' => 'Book a Consultation'],
         };
     }
 
@@ -159,6 +159,9 @@ abstract class CatalogPage
                     'help_label' => ['label' => 'Help Box Label', 'type' => 'text', 'default' => 'Quick Help'],
                     'help_phone' => ['label' => 'Help Box Phone', 'type' => 'text', 'default' => Company::PHONE],
                     'help_image' => ['label' => 'Help Box Background', 'type' => 'image', 'default' => 'img/service/service-4.jpg'],
+                    'details_note' => ['label' => 'Note Under Specifications', 'type' => 'textarea', 'default' => static::route() === 'products'
+                        ? 'Product information is summarised from documentation published by the manufacturer and may change between versions and regions. Contact Si Green Energy to confirm the exact model, availability and current specifications before purchase.'
+                        : '', 'help' => 'Shown on details pages that have specifications or a brand.'],
                 ],
                 'repeaters' => [
                     'downloads' => [

@@ -37,6 +37,7 @@ class PageSections
         'blog' => Pages\BlogPage::class,
         'team' => Pages\TeamPage::class,
         'testimonials' => Pages\TestimonialsPage::class,
+        'gallery' => Pages\GalleryPage::class,
         'privacy' => Pages\PrivacyPage::class,
         'terms' => Pages\TermsPage::class,
     ];
@@ -174,7 +175,7 @@ class PageSections
     public static function ctaDefinition(array $defaults = []): array
     {
         $defaults += [
-            'title' => 'Get a Free Solar Consultation',
+            'title' => 'Get Expert Solar Solutions Today',
             'text' => 'Tell us about your site and energy needs. Our engineers will recommend a practical solar solution for you.',
             'button_text' => 'Contact Si Green Energy',
             'button_link' => '/contact',
@@ -186,7 +187,7 @@ class PageSections
             'render' => false,
             'toggle' => true,
             'fields' => [
-                'title' => ['label' => 'Heading', 'type' => 'textarea', 'default' => $defaults['title']],
+                'title' => ['label' => 'Heading (one line)', 'type' => 'text', 'max' => 60, 'default' => $defaults['title'], 'help' => 'Shown on one line on desktop: keep it under about 40 characters.'],
                 'text' => ['label' => 'Description', 'type' => 'textarea', 'default' => $defaults['text']],
                 'button_text' => ['label' => 'Button Label', 'type' => 'text', 'default' => $defaults['button_text']],
                 'button_link' => ['label' => 'Button Link', 'type' => 'url', 'default' => $defaults['button_link']],

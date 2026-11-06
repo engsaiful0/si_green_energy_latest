@@ -11,7 +11,7 @@ class BlogPage extends ListingPage
 
     public static function cta(): array
     {
-        return ['title' => 'Have Questions About Going Solar?', 'text' => 'Our engineers can explain the options and help you plan the right system for your home or business.', 'button_text' => 'Talk to Our Experts'];
+        return ['title' => 'Get Expert Solar Advice Today', 'text' => 'Our engineers can explain the options and help you plan the right system for your home or business.', 'button_text' => 'Talk to Our Experts'];
     }
 
     protected static function title(): string

@@ -28,6 +28,12 @@
                         <img src="{{ $item->imageUrl() }}" alt="{{ $item->name }}">
                     </div>
                     <h3>{{ $item->name }}</h3>
+                    @if(!empty($item->brand) || !empty($item->model))
+                    <div class="catalog__brand mb-20">
+                        @if(!empty($item->brand))<span><strong>Brand:</strong> {{ $item->brand }}</span>@endif
+                        @if(!empty($item->model))<span><strong>Model / Series:</strong> {{ $item->model }}</span>@endif
+                    </div>
+                    @endif
                     @if($item->short_description)
                     <p>{{ $item->short_description }}</p>
                     @endif
@@ -73,6 +79,17 @@
                             </tbody>
                         </table>
                     </div>
+                    @endif
+
+                    @if(!empty($item->manufacturer_url) || !empty($item->datasheet_url))
+                    <div class="d-flex flex-wrap gap-3 mb-20">
+                        @if(!empty($item->manufacturer_url))<a class="btn-one" href="{{ $item->manufacturer_url }}" target="_blank" rel="noopener nofollow">Manufacturer Website</a>@endif
+                        @if(!empty($item->datasheet_url))<a class="btn-two" href="{{ $item->datasheet_url }}" target="_blank" rel="noopener nofollow">View Datasheet</a>@endif
+                    </div>
+                    @endif
+
+                    @if(!empty($sidebar['details_note']) && (!empty($item->brand) || !empty($item->specifications)))
+                    <p class="catalog__note mb-40"><i class="fal fa-info-circle me-1"></i>{{ $sidebar['details_note'] }}</p>
                     @endif
 
                     @if($faq && count($faq['items']))

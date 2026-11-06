@@ -145,30 +145,7 @@ class SiGreenEnergyContentSeeder extends Seeder
     {
         $data = require database_path('data/catalog.php');
 
-        // Products
-        $productCategories = [];
-        foreach ($data['product_categories'] as $order => $category) {
-            $productCategories[$category['slug']] = ProductCategory::firstOrCreate(
-                ['slug' => $category['slug']],
-                $category + ['order' => $order + 1, 'is_active' => true]
-            );
-        }
-        foreach ($data['products'] as $order => $product) {
-            Product::withTrashed()->firstOrCreate(['slug' => Str::slug($product['name'])], [
-                'name' => $product['name'],
-                'category_id' => $productCategories[$product['category']]->id,
-                'short_description' => $product['short'],
-                'description' => $product['description'],
-                'features' => $product['features'],
-                'specifications' => collect($product['specs'])->map(fn ($value, $label) => ['label' => $label, 'value' => $value])->values()->all(),
-                'featured_image' => $product['image'],
-                'meta_title' => $product['meta_title'],
-                'meta_description' => $product['meta_description'],
-                'status' => 'published',
-                'is_featured' => $order < 4,
-                'order' => $order + 1,
-            ]);
-        }
+        // Products: see ProductCatalogSeeder.
 
         // Services
         $serviceCategories = [];

@@ -29,7 +29,7 @@ abstract class LegalPage
 
     public static function cta(): array
     {
-        return ['title' => 'Questions About This Policy?', 'text' => 'Contact Si Green Energy and we will be glad to help.', 'button_text' => 'Contact Us'];
+        return ['title' => 'Questions? Contact Our Team', 'text' => 'Contact Si Green Energy and we will be glad to help.', 'button_text' => 'Contact Us'];
     }
 
     public static function sections(): array

@@ -41,6 +41,34 @@
             </div>
         </div>
 
+        @if($config['manufacturer'] ?? false)
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <h5 class="card-title mb-1">Manufacturer</h5>
+                <p class="text-muted small mb-3">Only enter details confirmed by the manufacturer's website or datasheet.</p>
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label">Brand / Manufacturer</label>
+                        <input type="text" class="form-control @error('brand') is-invalid @enderror" name="brand" value="{{ old('brand', $item->brand ?? '') }}">
+                        @error('brand')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-md-7 mb-3">
+                        <label class="form-label">Model / Series</label>
+                        <input type="text" class="form-control @error('model') is-invalid @enderror" name="model" value="{{ old('model', $item->model ?? '') }}">
+                        @error('model')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    @foreach(['manufacturer_url' => 'Official Manufacturer URL', 'datasheet_url' => 'Datasheet URL', 'source_url' => 'Source URL (where the information was verified)'] as $urlField => $urlLabel)
+                    <div class="col-12 mb-3">
+                        <label class="form-label">{{ $urlLabel }}</label>
+                        <input type="url" class="form-control @error($urlField) is-invalid @enderror" name="{{ $urlField }}" value="{{ old($urlField, $item->{$urlField} ?? '') }}" placeholder="https://...">
+                        @error($urlField)<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        @endif
+
         @if(!empty($config['list_fields']) || ($config['specifications'] ?? false))
         <div class="card shadow-sm mb-3">
             <div class="card-body">

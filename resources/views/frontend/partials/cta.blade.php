@@ -13,7 +13,7 @@
                     <div class="row al-center">
                         <div class="{{ ($c['image'] ?? null) ? 'col-lg-9' : 'col-lg-12' }}">
                             <div class="footer__cta-area-left">
-                                <h3>{!! nl2br(e($c['title'])) !!}</h3>
+                                <h3 class="cta__title-line">{{ str_replace(["\r", "\n"], ' ', $c['title']) }}</h3>
                                 @if(!empty($c['text']))
                                 <p class="footer__cta-area-text">{{ $c['text'] }}</p>
                                 @endif

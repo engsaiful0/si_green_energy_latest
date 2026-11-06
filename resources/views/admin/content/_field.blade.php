@@ -36,6 +36,7 @@
         <input type="number" class="form-control @error($errorKey) is-invalid @enderror" name="{{ $name }}" value="{{ $value }}" min="0" step="any">
     @else
         <input type="text" class="form-control @error($errorKey) is-invalid @enderror" name="{{ $name }}" value="{{ $value }}"
+               @if(isset($field['max'])) maxlength="{{ $field['max'] }}" @endif
                @if($type === 'url') placeholder="/about or https://..." @endif>
         @if($type === 'url')
             <small class="text-muted">{{ $field['help'] ?? 'Site path (e.g. /quote) or full URL.' }}</small>

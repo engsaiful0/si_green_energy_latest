@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\BlogController as FrontendBlogController;
 use App\Http\Controllers\Frontend\CompanyProfileController;
 use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\GalleryController as FrontendGalleryController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\LegalPageController;
 use App\Http\Controllers\Frontend\PageController as FrontendPageController;
@@ -39,6 +40,7 @@ Route::get('/company-profile', [CompanyProfileController::class, 'show'])->name(
 Route::redirect('/about', '/company-profile', 301)->name('about');
 
 Route::get('/testimonials', [FrontendTestimonialController::class, 'index'])->name('testimonials');
+Route::get('/gallery', [FrontendGalleryController::class, 'index'])->name('gallery');
 
 Route::get('/team', [FrontendTeamController::class, 'index'])->defaults('columns', 3)->name('team.index');
 Route::get('/team/grid-2', [FrontendTeamController::class, 'index'])->defaults('columns', 2)->name('team.grid2');
@@ -112,6 +114,8 @@ use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogPostController;
 use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\GalleryCategoryController;
+use App\Http\Controllers\Admin\GalleryImageController;
 use App\Http\Controllers\Admin\PageContentController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PartnerController;
@@ -186,6 +190,14 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Projects (+ gallery images)
     Route::resource('projects', ProjectController::class)->except(['show']);
     Route::delete('/projects/{project}/images/{image}', [ProjectController::class, 'destroyImage'])->name('projects.images.destroy');
+
+    // Gallery (images feed both the Gallery page and the homepage carousel)
+    Route::get('/gallery-carousel', [GalleryImageController::class, 'home'])->name('gallery.home');
+    Route::put('/gallery-carousel', [GalleryImageController::class, 'updateHome'])->name('gallery.home.update');
+    Route::put('/gallery-order', [GalleryImageController::class, 'reorder'])->name('gallery.reorder');
+    Route::patch('/gallery/{gallery}/toggle', [GalleryImageController::class, 'toggle'])->name('gallery.toggle');
+    Route::resource('gallery', GalleryImageController::class)->except(['show']);
+    Route::resource('gallery-categories', GalleryCategoryController::class)->except(['show']);
 
     // Pricing
     Route::get('/pricing', function () {

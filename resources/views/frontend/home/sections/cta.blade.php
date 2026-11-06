@@ -9,7 +9,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-7 lg-mb-25">
                             <div class="cta__one-title lg-t-center">
-                                <h3>{!! nl2br(e($c['title'])) !!}</h3>
+                                <h3 class="cta__title-line">{{ str_replace(["\r", "\n"], ' ', $c['title']) }}</h3>
                             </div>
                         </div>
                         @if($c['phone'])

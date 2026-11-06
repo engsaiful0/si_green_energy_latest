@@ -11,7 +11,7 @@ class TeamPage extends ListingPage
 
     public static function cta(): array
     {
-        return ['title' => 'Talk to Our Experts', 'text' => 'Discuss your project directly with our solar design team.', 'button_text' => 'Talk to an Engineer'];
+        return ['title' => "Let's Discuss Your Solar Project", 'text' => 'Discuss your project directly with our solar design team.', 'button_text' => 'Talk to an Engineer'];
     }
 
     protected static function title(): string

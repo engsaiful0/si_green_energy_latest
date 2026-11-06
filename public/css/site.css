@@ -125,3 +125,117 @@
     width: 160px;
   }
 }
+
+/* ==========================================================================
+   Call to action: the heading stays on ONE line on desktop/laptop (>= 992px).
+   CTA titles are kept short in the CMS (max 60 chars, ~40 recommended); the
+   font scales with the viewport and never overflows its container.
+   ========================================================================== */
+.cta__title-line {
+  overflow-wrap: anywhere;
+}
+@media (min-width: 992px) {
+  .footer__cta-area-left h3.cta__title-line,
+  .cta__one-title h3.cta__title-line {
+    max-width: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: clamp(22px, 2.15vw, 34px);
+    line-height: 1.25;
+  }
+}
+.footer__cta-area-left h3.cta__title-line {
+  margin-bottom: 18px;
+}
+.footer__cta-area-text {
+  margin-top: 0;
+}
+
+/* ==========================================================================
+   Justified paragraphs across the frontend (this stylesheet is frontend-only).
+   Headings, buttons, menus and labels are not paragraphs and keep their alignment;
+   paragraphs inside centred / right-aligned blocks keep that alignment too.
+   ========================================================================== */
+p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: manual;
+}
+.t-center p, .text-center p, .t-right p, .text-end p, .text-right p,
+.lg-t-center p, .sm-t-center p, .md-t-center p,
+.breadcrumb__area p, .copyright__area p, .footer__area-widget p,
+.topBar__one p, .header__area p, .menu__bar-popup p,
+.contact__one-item p, .team__two-item p, .counter__two-item p,
+.work__process-item p, .banner__one-capacity p, .features__one-left p,
+.portfolio__one-item p, .blog__one-item p, .all__sidebar p,
+.choose__us-area-list p, .service__details-content-list p {
+  text-align: inherit;
+}
+/* Short card texts read better left-aligned than stretched. */
+.service__one-item p, .service__two-item p, .features__one-right-item p,
+.consultation__area-right-list-item p, .faq__one-title p {
+  text-align: left;
+}
+@media (max-width: 991px) {
+  .footer__cta-area-text,
+  .lg-t-center p {
+    text-align: center;
+  }
+}
+
+/* --- Product details: brand / model line and note --- */
+.catalog__brand {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  color: var(--body-color);
+}
+.catalog__note {
+  font-size: 14px;
+  padding: 14px 18px;
+  border-left: 3px solid var(--primary-color-1);
+  background: var(--color-3, #F8F8F8);
+}
+
+/* --- Gallery page and homepage carousel --- */
+.gallery__grid .portfolio__two-item {
+  height: 320px;
+}
+.gallery__grid .portfolio__two-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gallery__carousel .portfolio__one-item-image img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+}
+.gallery__grid .portfolio__two-item > a {
+  display: block;
+}
+.gallery__filter {
+  margin-bottom: 10px;
+}
+.gallery__filter .nav {
+  row-gap: 12px;
+}
+.gallery__carousel-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.gallery__carousel-arrows {
+  margin-top: 0;
+}
+@media (max-width: 991px) {
+  .gallery__carousel-actions {
+    justify-content: center;
+  }
+}
+.mfp-title {
+  text-align: left;
+}

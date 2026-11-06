@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             AdminUserSeeder::class,
             SiGreenEnergyContentSeeder::class,
+            ProductCatalogSeeder::class,
+            GallerySeeder::class,
         ]);
     }
 }

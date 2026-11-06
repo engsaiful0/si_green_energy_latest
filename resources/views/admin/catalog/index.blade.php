@@ -62,6 +62,7 @@
                             <td><img src="{{ $item->imageUrl() }}" alt="" style="width: 72px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
                             <td>
                                 <strong>{{ $item->name }}</strong>
+                                @if(!empty($item->brand))<span class="badge bg-light text-dark border ms-1">{{ $item->brand }}</span>@endif
                                 @if($item->is_featured)<span class="badge bg-warning text-dark ms-1">Featured</span>@endif
                                 <div class="small text-muted">/{{ $item->slug }}</div>
                             </td>

@@ -13,6 +13,12 @@
             ['Team Members', route('admin.team.index'), request()->routeIs('admin.team.*')],
             ['Team Page', route('admin.content.index', 'team'), $isContent('team')],
         ]],
+        ['gallery', 'Gallery Management', 'fa-images', [
+            ['Gallery Images', route('admin.gallery.index'), request()->routeIs('admin.gallery.index', 'admin.gallery.create', 'admin.gallery.edit')],
+            ['Gallery Categories', route('admin.gallery-categories.index'), request()->routeIs('admin.gallery-categories.*')],
+            ['Homepage Carousel', route('admin.gallery.home'), request()->routeIs('admin.gallery.home')],
+            ['Gallery Page', route('admin.content.index', 'gallery'), $isContent('gallery')],
+        ]],
         ['products', 'Product Management', 'fa-box', [
             ['Product Categories', route('admin.product-categories.index'), request()->routeIs('admin.product-categories.*')],
             ['Products', route('admin.products.index'), request()->routeIs('admin.products.*')],
