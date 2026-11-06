@@ -14,4 +14,6 @@
         'items' => $data[$section->section_key] ?? collect(),
     ])
 @endforeach
+
+@include('frontend.partials.page-cta', ['page' => $page])
 @endsection

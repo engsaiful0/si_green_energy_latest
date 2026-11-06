@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', 'FAQ - SI Green Energy')
+@section('title', 'FAQ - Si Green Energy')
 @section('meta_description', 'Frequently asked questions about our solar and renewable energy solutions')
 
 @section('content')

@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
-@section('title', 'Search Results' . ($query ? ' for "' . $query . '"' : '') . ' - SI Green Energy')
-@section('meta_description', 'Search results for SI Green Energy')
+@section('title', 'Search Results' . ($query ? ' for "' . $query . '"' : '') . ' - Si Green Energy')
+@section('meta_description', 'Search results for Si Green Energy')
 
 @section('content')
 <!-- Page Banner Start -->

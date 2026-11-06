@@ -22,6 +22,7 @@ class Solution extends Model
         'short_description',
         'description',
         'features',
+        'applications',
         'featured_image',
         'is_featured',
         'status',
@@ -33,6 +34,7 @@ class Solution extends Model
 
     protected $casts = [
         'features' => 'array',
+        'applications' => 'array',
         'is_featured' => 'boolean',
         'order' => 'integer',
         'views' => 'integer',

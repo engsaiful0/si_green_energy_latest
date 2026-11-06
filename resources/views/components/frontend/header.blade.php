@@ -39,20 +39,15 @@
                 </div>
             </div>
             <div class="header__area-menubar-right">
-                <div class="header__area-menubar-right-search">
-                    <div class="search">
-                        <span class="header__area-menubar-right-search-icon open"><i class="fal fa-search"></i></span>
-                    </div>
-                </div>
                 <div class="header__area-menubar-right-sidebar">
-                    <div class="header__area-menubar-right-sidebar-popup-icon"><i class="flaticon-menu-2"></i></div>
+                    <div class="header__area-menubar-right-sidebar-popup-icon" role="button" aria-label="Open contact panel"><i class="flaticon-menu-2"></i></div>
                 </div>
+                @if($site['header_button_text'])
                 <div class="header__area-menubar-right-btn">
-                    @if($site['header_button_text'])
                     <a class="btn-one" href="{{ \App\Support\Link::to($site['header_button_link']) }}">{{ $site['header_button_text'] }}</a>
-                    @endif
                 </div>
-                <div class="header__area-menubar-right-responsive-menu menu__bar">
+                @endif
+                <div class="header__area-menubar-right-responsive-menu menu__bar" role="button" aria-label="Open menu">
                     <i class="flaticon-menu-2"></i>
                 </div>
             </div>

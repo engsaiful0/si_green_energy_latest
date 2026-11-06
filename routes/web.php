@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\BlogController as FrontendBlogController;
 use App\Http\Controllers\Frontend\CompanyProfileController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\LegalPageController;
 use App\Http\Controllers\Frontend\PageController as FrontendPageController;
 use App\Http\Controllers\Frontend\ProductController as FrontendProductController;
 use App\Http\Controllers\Frontend\ProjectController as FrontendProjectController;
@@ -97,13 +98,8 @@ Route::get('/search', [SearchController::class, 'index'])->name('search');
 Route::post('/newsletter/subscribe', [ContactController::class, 'subscribe'])->middleware('throttle:6,1')->name('newsletter.subscribe');
 
 // Privacy & Terms
-Route::get('/privacy', function () {
-    return view('frontend.pages.privacy');
-})->name('privacy');
-
-Route::get('/terms', function () {
-    return view('frontend.pages.terms');
-})->name('terms');
+Route::get('/privacy', [LegalPageController::class, 'show'])->defaults('page', 'privacy')->name('privacy');
+Route::get('/terms', [LegalPageController::class, 'show'])->defaults('page', 'terms')->name('terms');
 
 /*
 |--------------------------------------------------------------------------
@@ -160,6 +156,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
     // Page CMS: home, company profile, contact, services/solutions/products, projects, blog, team, testimonials
     Route::get('/seo', [PageContentController::class, 'pages'])->name('seo.index');
+    Route::get('/content-references', [PageContentController::class, 'references'])->name('content.references');
     Route::get('/content/{page}', [PageContentController::class, 'index'])->name('content.index');
     Route::put('/content/{page}', [PageContentController::class, 'arrange'])->name('content.arrange');
     Route::get('/content/{page}/{section}/edit', [PageContentController::class, 'edit'])->name('content.edit');

@@ -41,6 +41,31 @@
             </div>
         </div>
 
+        @if(!empty($config['list_fields']) || ($config['specifications'] ?? false))
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Additional Information</h5>
+                @foreach($config['list_fields'] ?? [] as $listField => $listLabel)
+                <div class="mb-3">
+                    <label class="form-label">{{ $listLabel }}</label>
+                    <textarea class="form-control @error($listField) is-invalid @enderror" name="{{ $listField }}" rows="4"
+                              placeholder="One per line">{{ old($listField, implode(PHP_EOL, (array) ($item->{$listField} ?? []))) }}</textarea>
+                    @error($listField)<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                @endforeach
+                @if($config['specifications'] ?? false)
+                <div class="mb-0">
+                    <label class="form-label">Technical Specifications</label>
+                    <textarea class="form-control @error('specifications') is-invalid @enderror" name="specifications" rows="6"
+                              placeholder="One per line, e.g. Cell technology: Monocrystalline">{{ old('specifications', collect($item->specifications ?? [])->map(fn ($spec) => ($spec['label'] ?? '') . ': ' . ($spec['value'] ?? ''))->implode(PHP_EOL)) }}</textarea>
+                    <small class="text-muted">Format <code>Label: value</code>. Only enter values confirmed by the manufacturer's datasheet.</small>
+                    @error('specifications')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                @endif
+            </div>
+        </div>
+        @endif
+
         @include('admin.partials.seo-fields', ['model' => $item])
     </div>
 

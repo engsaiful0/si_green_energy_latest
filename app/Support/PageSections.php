@@ -21,6 +21,8 @@ class PageSections
 {
     public const PAGE_SETTINGS = 'page';
 
+    public const CTA = 'cta';
+
     /**
      * page key => definition class
      */
@@ -35,6 +37,8 @@ class PageSections
         'blog' => Pages\BlogPage::class,
         'team' => Pages\TeamPage::class,
         'testimonials' => Pages\TestimonialsPage::class,
+        'privacy' => Pages\PrivacyPage::class,
+        'terms' => Pages\TermsPage::class,
     ];
 
     public static function pages(): array
@@ -55,8 +59,14 @@ class PageSections
     public static function definitions(string $page): array
     {
         $class = self::PAGES[$page];
+        $definitions = [self::PAGE_SETTINGS => $class::pageSection()] + $class::sections();
 
-        return [self::PAGE_SETTINGS => $class::pageSection()] + $class::sections();
+        // Every page except home ends with the shared call-to-action box (home has its own footer_cta block).
+        if (method_exists($class, 'cta')) {
+            $definitions[self::CTA] = static::ctaDefinition($class::cta());
+        }
+
+        return $definitions;
     }
 
     public static function has(string $page, string $key): bool
@@ -154,6 +164,38 @@ class PageSections
                 'order' => $key === self::PAGE_SETTINGS ? 0 : $order,
             ]);
         }
+    }
+
+    /**
+     * Shared call-to-action section (rendered at the bottom of the page by frontend.partials.page-cta).
+     *
+     * @param  array  $defaults  title, text, button_text, button_link (optional overrides)
+     */
+    public static function ctaDefinition(array $defaults = []): array
+    {
+        $defaults += [
+            'title' => 'Get a Free Solar Consultation',
+            'text' => 'Tell us about your site and energy needs. Our engineers will recommend a practical solar solution for you.',
+            'button_text' => 'Contact Si Green Energy',
+            'button_link' => '/contact',
+        ];
+
+        return [
+            'name' => 'Call to Action',
+            'description' => 'Call-to-action box shown at the bottom of this page (same design on every page).',
+            'render' => false,
+            'toggle' => true,
+            'fields' => [
+                'title' => ['label' => 'Heading', 'type' => 'textarea', 'default' => $defaults['title']],
+                'text' => ['label' => 'Description', 'type' => 'textarea', 'default' => $defaults['text']],
+                'button_text' => ['label' => 'Button Label', 'type' => 'text', 'default' => $defaults['button_text']],
+                'button_link' => ['label' => 'Button Link', 'type' => 'url', 'default' => $defaults['button_link']],
+                'help_label' => ['label' => 'Phone Label', 'type' => 'text', 'default' => 'Call our team'],
+                'phone' => ['label' => 'Phone', 'type' => 'text', 'default' => Company::PHONE, 'help' => 'Leave empty to hide the phone.'],
+                'image' => ['label' => 'Image', 'type' => 'image', 'default' => 'img/avatar/avatar-5.png'],
+                'background_image' => ['label' => 'Background', 'type' => 'image', 'default' => 'img/shape/shape-7.png'],
+            ],
+        ];
     }
 
     /**

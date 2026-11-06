@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 565" width="850" height="565" role="img" aria-label="Tubular lead-acid solar battery">
+  <title>Tubular lead-acid solar battery</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EEF7EA"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E6E9ED"/>
+    </linearGradient>
+  </defs>
+  <rect width="850" height="565" fill="url(#bg)"/>
+  <circle cx="735" cy="105" r="52" fill="#57B33E" opacity="0.14"/>
+  <circle cx="735" cy="105" r="30" fill="#57B33E" opacity="0.22"/>
+  <ellipse cx="425" cy="500" rx="260" ry="18" fill="#1F242C" opacity="0.08"/>
+  <g transform="translate(250 105)">
+    <rect x="25" y="-26" width="46" height="30" rx="6" fill="#1F242C"/>
+    <rect x="300" y="-26" width="46" height="30" rx="6" fill="#D64545"/>
+    <rect x="0" y="0" width="370" height="370" rx="20" fill="url(#metal)" stroke="#1F242C" stroke-width="5"/>
+    <rect x="0" y="0" width="370" height="70" rx="20" fill="#E4E7EB"/>
+    <circle cx="60" cy="35" r="16" fill="#3D6FB6"/><circle cx="120" cy="35" r="16" fill="#3D6FB6"/><circle cx="180" cy="35" r="16" fill="#3D6FB6"/><circle cx="240" cy="35" r="16" fill="#3D6FB6"/><circle cx="300" cy="35" r="16" fill="#3D6FB6"/><circle cx="360" cy="35" r="16" fill="#3D6FB6"/>
+    <rect x="40" y="120" width="290" height="110" rx="12" fill="#57B33E" opacity="0.15"/>
+    <rect x="70" y="150" width="230" height="16" rx="8" fill="#57B33E"/>
+    <rect x="70" y="185" width="160" height="16" rx="8" fill="#57B33E" opacity="0.5"/>
+    <rect x="40" y="270" width="290" height="10" rx="5" fill="#E4E7EB"/>
+    <rect x="40" y="295" width="200" height="10" rx="5" fill="#E4E7EB"/>
+  </g>
+</svg>

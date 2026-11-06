@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 64" width="230" height="64" role="img" aria-label="Si Green Energy">
+  <title>Si Green Energy</title>
+  <!-- Mark: sun with a leaf (green, for dark backgrounds) -->
+  <g transform="translate(32 32)">
+    <g stroke="#57B33E" stroke-width="3.2" stroke-linecap="round">
+      <line x1="0" y1="-29" x2="0" y2="-23"/>
+      <line x1="20.5" y1="-20.5" x2="16.3" y2="-16.3"/>
+      <line x1="29" y1="0" x2="23" y2="0"/>
+      <line x1="-29" y1="0" x2="-23" y2="0"/>
+      <line x1="-20.5" y1="-20.5" x2="-16.3" y2="-16.3"/>
+    </g>
+    <circle r="19" fill="#57B33E"/>
+    <path d="M-9 10 C-11 -4 -1 -12 12 -11 C13 2 5 11 -9 10 Z" fill="#FFFFFF"/>
+    <path d="M-9 10 L6 -5" stroke="#57B33E" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <text x="70" y="31" font-family="'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="800" fill="#FFFFFF">Si Green</text>
+  <text x="71" y="52" font-family="'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="5.2" fill="#57B33E">ENERGY</text>
+</svg>

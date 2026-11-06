@@ -4,7 +4,7 @@
     if (preg_match('/src=["\']([^"\']+)["\']/i', $embed, $match)) {
         $embed = html_entity_decode($match[1]);
     }
-    $isAllowed = preg_match('#^https://(www\.)?google\.[a-z.]+/maps/embed#i', $embed);
+    $isAllowed = preg_match('#^https://(www\.|maps\.)?google\.[a-z.]+/maps(/embed|\?)#i', $embed);
 @endphp
 @if($embed && $isAllowed)
 <div class="contact__two-map">

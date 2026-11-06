@@ -23,6 +23,14 @@ class BlogCategory extends Model
     /**
      * Get the blog posts in this category.
      */
+    /**
+     * Records assigned to the category (same name as the other category models).
+     */
+    public function items()
+    {
+        return $this->posts();
+    }
+
     public function posts()
     {
         return $this->hasMany(BlogPost::class, 'category_id');

@@ -5,6 +5,9 @@
             <div class="col-lg-8">
                 <div class="topBar__one-left lg-t-center">
                     <ul>
+                        @if($site['phone'])
+                        <li><a href="{{ \App\Support\Link::tel($site['phone']) }}"><i class="flaticon-phone-call"></i>{{ $site['phone'] }}</a></li>
+                        @endif
                         @if($site['email'])
                         <li><a href="mailto:{{ $site['email'] }}"><i class="flaticon-envelope"></i>{{ $site['email'] }}</a></li>
                         @endif

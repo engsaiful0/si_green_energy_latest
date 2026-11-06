@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 565" width="850" height="565" role="img" aria-label="Solar charge controller">
+  <title>Solar charge controller</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EEF7EA"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E6E9ED"/>
+    </linearGradient>
+  </defs>
+  <rect width="850" height="565" fill="url(#bg)"/>
+  <circle cx="735" cy="105" r="52" fill="#57B33E" opacity="0.14"/>
+  <circle cx="735" cy="105" r="30" fill="#57B33E" opacity="0.22"/>
+  <ellipse cx="425" cy="500" rx="260" ry="18" fill="#1F242C" opacity="0.08"/>
+  <g transform="translate(205 125)">
+    <rect x="0" y="0" width="440" height="310" rx="24" fill="url(#metal)" stroke="#1F242C" stroke-width="5"/>
+    <rect x="45" y="40" width="200" height="110" rx="10" fill="#1F242C"/>
+    <text x="145" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="40" font-weight="700" fill="#57B33E">MPPT</text>
+    <circle cx="300" cy="70" r="12" fill="#57B33E"/>
+    <circle cx="345" cy="70" r="12" fill="#F2C94C"/>
+    <circle cx="390" cy="70" r="12" fill="#E4E7EB" stroke="#9AA3AE" stroke-width="2"/>
+    <rect x="285" y="110" width="120" height="40" rx="10" fill="#E4E7EB"/>
+    <rect x="30" y="215" width="380" height="80" rx="12" fill="#E4E7EB"/>
+    <g transform="translate(45 238)"><rect width="42" height="42" rx="6" fill="#1F242C"/><circle cx="21" cy="21" r="9" fill="#9AA3AE"/></g><g transform="translate(107 238)"><rect width="42" height="42" rx="6" fill="#1F242C"/><circle cx="21" cy="21" r="9" fill="#9AA3AE"/></g><g transform="translate(169 238)"><rect width="42" height="42" rx="6" fill="#1F242C"/><circle cx="21" cy="21" r="9" fill="#9AA3AE"/></g><g transform="translate(231 238)"><rect width="42" height="42" rx="6" fill="#1F242C"/><circle cx="21" cy="21" r="9" fill="#9AA3AE"/></g><g transform="translate(293 238)"><rect width="42" height="42" rx="6" fill="#1F242C"/><circle cx="21" cy="21" r="9" fill="#9AA3AE"/></g><g transform="translate(355 238)"><rect width="42" height="42" rx="6" fill="#1F242C"/><circle cx="21" cy="21" r="9" fill="#9AA3AE"/></g>
+  </g>
+</svg>

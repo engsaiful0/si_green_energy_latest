@@ -30,6 +30,7 @@ class ProductController extends CatalogItemController
             'icon' => null,
             'price' => 'price',
             'features_column' => 'features',
+            'specifications' => true,
             'show_route' => false,
         ];
     }

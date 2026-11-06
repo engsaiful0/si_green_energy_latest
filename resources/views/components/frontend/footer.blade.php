@@ -33,10 +33,12 @@
                                 @endforeach
                             </div>
                             @endif
-                            @if($site['support_email'])
+                            @if($site['email'] || $site['support_email'])
                             <h6>Email</h6>
                             <div class="footer__area-widget-info">
-                                <p><a href="mailto:{{ $site['support_email'] }}">{{ $site['support_email'] }}</a></p>
+                                @foreach(array_filter([$site['email'], $site['support_email']]) as $mail)
+                                <p><a href="mailto:{{ $mail }}">{{ $mail }}</a></p>
+                                @endforeach
                             </div>
                             @endif
                         </div>
@@ -46,10 +48,11 @@
                             <h6>Resources</h6>
                             <div class="footer-widget-menu">
                                 <ul>
-                                    <li><a href="{{ route('about') }}">About Us</a></li>
+                                    <li><a href="{{ route('company-profile') }}">Company Profile</a></li>
+                                    <li><a href="{{ route('solutions.index') }}">Solutions</a></li>
+                                    <li><a href="{{ route('services.index') }}">Services</a></li>
+                                    <li><a href="{{ route('products.index') }}">Products</a></li>
                                     <li><a href="{{ route('blog.index') }}">Blog</a></li>
-                                    <li><a href="{{ route('testimonials') }}">Testimonials</a></li>
-                                    <li><a href="{{ route('faq') }}">FAQs</a></li>
                                     <li><a href="{{ route('contact') }}">Contact Us</a></li>
                                 </ul>
                             </div>

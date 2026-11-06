@@ -9,6 +9,11 @@ class BlogPage extends ListingPage
         return ['label' => 'Blog Page', 'route' => 'blog.index', 'views' => 'frontend.blog.sections'];
     }
 
+    public static function cta(): array
+    {
+        return ['title' => 'Have Questions About Going Solar?', 'text' => 'Our engineers can explain the options and help you plan the right system for your home or business.', 'button_text' => 'Talk to Our Experts'];
+    }
+
     protected static function title(): string
     {
         return 'Blog';
@@ -16,7 +21,7 @@ class BlogPage extends ListingPage
 
     protected static function metaDescription(): string
     {
-        return 'News, guides and insights about solar and renewable energy.';
+        return 'Guides and insights about solar energy in Bangladesh from Si Green Energy: system types, panels, inverters, batteries and net metering.';
     }
 
     protected static function listingFields(): array

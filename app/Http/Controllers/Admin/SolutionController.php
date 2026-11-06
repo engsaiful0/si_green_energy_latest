@@ -30,6 +30,7 @@ class SolutionController extends CatalogItemController
             'icon' => 'optional',
             'price' => null,
             'features_column' => 'features',
+            'list_fields' => ['applications' => 'Suitable Applications'],
             'show_route' => false,
         ];
     }

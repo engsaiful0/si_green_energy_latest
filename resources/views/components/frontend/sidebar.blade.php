@@ -17,17 +17,20 @@
             <div class="header__area-menubar-right-sidebar-popup-contact-item-content">
                 <span>Call Now</span>
                 <h6><a href="{{ \App\Support\Link::tel($site['phone']) }}">{{ $site['phone'] }}</a></h6>
+                @if($site['phone_secondary'])<h6><a href="{{ \App\Support\Link::tel($site['phone_secondary']) }}">{{ $site['phone_secondary'] }}</a></h6>@endif
             </div>
         </div>
         @endif
-        @if($site['support_email'])
+        @if($site['email'] || $site['support_email'])
         <div class="header__area-menubar-right-sidebar-popup-contact-item">
             <div class="header__area-menubar-right-sidebar-popup-contact-item-icon">
                 <i class="fal fa-envelope"></i>
             </div>
             <div class="header__area-menubar-right-sidebar-popup-contact-item-content">
                 <span>Quick Email</span>
-                <h6><a href="mailto:{{ $site['support_email'] }}">{{ $site['support_email'] }}</a></h6>
+                @foreach(array_filter([$site['email'], $site['support_email']]) as $mail)
+                <h6><a href="mailto:{{ $mail }}">{{ $mail }}</a></h6>
+                @endforeach
             </div>
         </div>
         @endif

@@ -53,6 +53,28 @@
                     </div>
                     @endif
 
+                    @if(count((array) ($item->applications ?? [])))
+                    <h4>Suitable Applications</h4>
+                    <div class="about__four-right-list mb-30">
+                        @foreach($item->applications as $application)
+                        <span><i class="fa-sharp fa-solid fa-circle-check"></i>{{ $application }}</span>
+                        @endforeach
+                    </div>
+                    @endif
+
+                    @if(count((array) ($item->specifications ?? [])))
+                    <h4>Technical Specifications</h4>
+                    <div class="table-responsive mb-30">
+                        <table class="table catalog-specs mb-0">
+                            <tbody>
+                                @foreach($item->specifications as $spec)
+                                <tr><th scope="row">{{ $spec['label'] ?? '' }}</th><td>{{ $spec['value'] ?? '' }}</td></tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    @endif
+
                     @if($faq && count($faq['items']))
                     <h4>{{ $sidebar['faq_title'] }}</h4>
                     <div class="service__details-content-faq">
@@ -105,4 +127,6 @@
     </div>
 </div>
 <!-- {{ $catalog['singular'] }} Details Area End -->
+
+@include('frontend.partials.page-cta', ['page' => $catalog['prefix']])
 @endsection

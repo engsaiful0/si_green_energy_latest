@@ -44,4 +44,6 @@
     </div>
 </div>
 <!-- Team Area End -->
+
+@include('frontend.partials.page-cta', ['page' => 'team'])
 @endsection

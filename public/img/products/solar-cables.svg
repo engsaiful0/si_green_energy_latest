@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 565" width="850" height="565" role="img" aria-label="Solar DC cables and connectors">
+  <title>Solar DC cables and connectors</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EEF7EA"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E6E9ED"/>
+    </linearGradient>
+  </defs>
+  <rect width="850" height="565" fill="url(#bg)"/>
+  <circle cx="735" cy="105" r="52" fill="#57B33E" opacity="0.14"/>
+  <circle cx="735" cy="105" r="30" fill="#57B33E" opacity="0.22"/>
+  <ellipse cx="425" cy="500" rx="260" ry="18" fill="#1F242C" opacity="0.08"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M190 330 C190 200 400 200 400 300 C400 400 230 400 230 310 C230 240 360 240 360 300 C360 350 270 350 270 310" stroke="#D64545" stroke-width="22"/>
+    <path d="M430 330 C430 200 640 200 640 300 C640 400 470 400 470 310 C470 240 600 240 600 300 C600 350 510 350 510 310" stroke="#1F242C" stroke-width="22"/>
+  </g>
+  <g transform="translate(300 400)">
+    <rect x="0" y="0" width="110" height="44" rx="12" fill="#1F242C"/>
+    <rect x="110" y="10" width="40" height="24" rx="6" fill="#9AA3AE"/>
+    <rect x="160" y="0" width="110" height="44" rx="12" fill="#1F242C"/>
+    <rect x="150" y="14" width="20" height="16" rx="3" fill="#57B33E"/>
+  </g>
+</svg>

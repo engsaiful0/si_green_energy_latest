@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', 'Request a Quote - SI Green Energy')
+@section('title', 'Request a Quote - Si Green Energy')
 @section('meta_description', 'Request a free quote for solar and renewable energy solutions')
 
 @section('content')

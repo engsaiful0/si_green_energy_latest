@@ -128,6 +128,12 @@ abstract class CatalogItemController extends Controller
         if ($config['icon']) {
             $rules['icon'] = [$config['icon'] === 'required' ? 'required' : 'nullable', 'string', 'max:100'];
         }
+        foreach (array_keys($config['list_fields'] ?? []) as $listField) {
+            $rules[$listField] = ['nullable', 'string', 'max:5000'];
+        }
+        if ($config['specifications'] ?? false) {
+            $rules['specifications'] = ['nullable', 'string', 'max:5000'];
+        }
         if ($config['price']) {
             $rules[$config['price']] = ['nullable', 'numeric', 'min:0', 'max:99999999'];
         }
@@ -138,6 +144,20 @@ abstract class CatalogItemController extends Controller
         $features = array_values(array_filter(array_map('trim', preg_split('/\R/', $data['features'] ?? ''))));
         unset($data['features']);
         $data[$config['features_column']] = $features;
+
+        // Extra one-per-line lists (e.g. solution applications).
+        foreach (array_keys($config['list_fields'] ?? []) as $listField) {
+            $data[$listField] = array_values(array_filter(array_map('trim', preg_split('/\R/', $data[$listField] ?? ''))));
+        }
+
+        // Specifications: "Label: value" per line.
+        if ($config['specifications'] ?? false) {
+            $data['specifications'] = collect(preg_split('/\R/', $data['specifications'] ?? ''))
+                ->map(fn ($line) => array_map('trim', explode(':', $line, 2)))
+                ->filter(fn ($pair) => $pair[0] !== '')
+                ->map(fn ($pair) => ['label' => $pair[0], 'value' => $pair[1] ?? ''])
+                ->values()->all();
+        }
 
         $data['description'] = $data['description'] ?? '';
         $data['order'] = $data['order'] ?? 0;

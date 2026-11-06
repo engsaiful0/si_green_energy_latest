@@ -5,4 +5,6 @@
 
 {{-- Managed in Admin > Contact Page CMS. --}}
 @include('frontend.partials.sections')
+
+@include('frontend.partials.page-cta', ['page' => 'contact'])
 @endsection

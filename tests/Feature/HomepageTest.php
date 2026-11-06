@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Models\PageSection;
 use App\Models\Partner;
 use App\Models\User;
-use Database\Seeders\HomepageContentSeeder;
+use Database\Seeders\SiGreenEnergyContentSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -28,22 +28,22 @@ class HomepageTest extends TestCase
     public function test_homepage_renders_every_seeded_section(): void
     {
         $this->admin(); // blog posts need an author
-        $this->seed(HomepageContentSeeder::class);
+        $this->seed(SiGreenEnergyContentSeeder::class);
 
         $response = $this->get('/')->assertOk();
 
         foreach (['banner__one', 'features__one', 'about__one', 'service__one', 'cta__one', 'choose__us',
-                  'portfolio__one', 'work__process', 'team__one', 'testimonial__one', 'brand__area',
-                  'blog__one', 'footer__cta'] as $class) {
+                  'work__process', 'blog__one', 'footer__cta'] as $class) {
             $response->assertSee('class="' . $class, false);
         }
 
-        $response->assertSee('Eco Friendly')->assertSee('Solar Panel Services')->assertSee('Steve Rhodes');
+        $response->assertSee('Clean Solar Power')->assertSee('Solar System Design and Engineering')
+            ->assertDontSee('Steve Rhodes')->assertDontSee('class="team__one', false); // no demo team
     }
 
     public function test_homepage_works_with_an_empty_database(): void
     {
-        $this->get('/')->assertOk()->assertSee('Your Trusted Energy Partner');
+        $this->get('/')->assertOk()->assertSee('Your Solar Energy Partner in Bangladesh');
         $this->assertSame(count(\App\Support\PageSections::definitions('home')), PageSection::homepage()->count());
     }
 
@@ -147,23 +147,23 @@ class HomepageTest extends TestCase
     {
         $this->actingAs($this->admin())
             ->put(route('admin.settings.general.update'), [
-                'site_name' => 'SI Green Energy',
+                'site_name' => 'Si Green Energy',
                 'phone' => '+880 1700 000000',
-                'copyright' => 'Copyright :year - SI Green Energy',
+                'copyright' => 'Copyright :year - Si Green Energy',
             ])
             ->assertRedirect(route('admin.settings.general'));
 
         $this->get('/')->assertSee('+880 1700 000000')
-            ->assertSee('Copyright ' . date('Y') . ' - SI Green Energy')
-            ->assertSee('img/logo-1.png'); // cleared logo falls back to the theme logo
+            ->assertSee('Copyright ' . date('Y') . ' - Si Green Energy')
+            ->assertSee('img/brand-si/logo-white.svg'); // cleared logo falls back to the brand logo
     }
 
     public function test_listing_pages_linked_from_the_homepage_load(): void
     {
         $this->admin(); // blog posts need an author
-        $this->seed(HomepageContentSeeder::class);
+        $this->seed(SiGreenEnergyContentSeeder::class);
 
-        $urls = ['/team', '/projects/4-columns', '/blog', '/blog/solar-power-for-a-cleaner-brighter-world', '/services/wind-turbines'];
+        $urls = ['/team', '/projects/4-columns', '/blog', '/blog/why-solar-energy-is-important-for-bangladesh', '/services/solar-system-design-and-engineering'];
         $statuses = array_map(fn ($url) => $this->get($url)->getStatusCode(), array_combine($urls, $urls));
 
         $this->assertSame(array_fill_keys($urls, 200), $statuses);

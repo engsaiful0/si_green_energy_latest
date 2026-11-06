@@ -107,4 +107,6 @@
     </div>
 </div>
 <!-- Portfolio Details Area End -->
+
+@include('frontend.partials.page-cta', ['page' => 'projects'])
 @endsection

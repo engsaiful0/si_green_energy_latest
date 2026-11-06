@@ -2,6 +2,7 @@
 
 namespace App\Support\Pages;
 
+use App\Support\Company;
 use App\Support\PageSections;
 
 /**
@@ -20,7 +21,17 @@ class ContactPage
 
     public static function pageSection(): array
     {
-        return PageSections::pageSettings(true, 'Contact Us', 'Get in touch with SI Green Energy for solar installations, maintenance and quotes.');
+        return PageSections::pageSettings(true, 'Contact Us', 'Contact Si Green Energy in Chattogram for solar system design, installation, maintenance and quotations. Call 01813541292 or 01805993540.');
+    }
+
+    public static function cta(): array
+    {
+        return [
+            'title' => 'Prefer to Talk? Call Si Green Energy',
+            'text' => 'Speak directly with our team about your solar project, a quotation or support for an existing system.',
+            'button_text' => 'Call ' . Company::PHONE,
+            'button_link' => 'tel:' . Company::PHONE,
+        ];
     }
 
     public static function sections(): array
@@ -31,8 +42,8 @@ class ContactPage
                 'description' => 'Form headings and texts, contact detail cards and social links.',
                 'fields' => [
                     'subtitle' => ['label' => 'Subtitle', 'type' => 'text', 'default' => 'Contact us'],
-                    'title' => ['label' => 'Title', 'type' => 'textarea', 'default' => 'Do you have any question?'],
-                    'text' => ['label' => 'Text', 'type' => 'textarea', 'default' => 'Tell us about your project or question and our team will get back to you within one business day.'],
+                    'title' => ['label' => 'Title', 'type' => 'textarea', 'default' => 'Have a Question About Solar?'],
+                    'text' => ['label' => 'Text', 'type' => 'textarea', 'default' => 'Tell us about your site, your electricity needs or your question. Our team will review your message and get back to you as soon as possible.'],
                     'name_placeholder' => ['label' => 'Name Field Placeholder', 'type' => 'text', 'default' => 'Full Name'],
                     'email_placeholder' => ['label' => 'Email Field Placeholder', 'type' => 'text', 'default' => 'Email Address'],
                     'phone_placeholder' => ['label' => 'Phone Field Placeholder', 'type' => 'text', 'default' => 'Phone Number'],
@@ -53,10 +64,10 @@ class ContactPage
                             'link' => ['label' => 'Link (optional)', 'type' => 'url', 'help' => 'tel:..., mailto:... or a map URL'],
                         ],
                         'default' => [
-                            ['icon' => 'flaticon-telephone-call', 'label' => 'Phone :', 'value' => '+125 (895) 658 568', 'link' => 'tel:+125895658568'],
-                            ['icon' => 'flaticon-mail', 'label' => 'Email Address :', 'value' => 'info@sigreenenergy.com', 'link' => 'mailto:info@sigreenenergy.com'],
-                            ['icon' => 'flaticon-location-1', 'label' => 'Location :', 'value' => 'New Jersey 45463', 'link' => 'https://google.com/maps'],
-                            ['icon' => 'flaticon-wall-clock', 'label' => 'Opening Hours :', 'value' => 'Mon-Fri 09 am-05 pm', 'link' => ''],
+                            ['icon' => 'flaticon-telephone-call', 'label' => 'Mobile :', 'value' => Company::PHONE, 'link' => 'tel:' . Company::PHONE],
+                            ['icon' => 'flaticon-telephone-call', 'label' => 'Mobile :', 'value' => Company::PHONE_2, 'link' => 'tel:' . Company::PHONE_2],
+                            ['icon' => 'flaticon-mail', 'label' => 'Email :', 'value' => Company::EMAIL, 'link' => 'mailto:' . Company::EMAIL],
+                            ['icon' => 'flaticon-mail', 'label' => 'Email :', 'value' => Company::EMAIL_2, 'link' => 'mailto:' . Company::EMAIL_2],
                         ],
                     ],
                 ],
@@ -66,8 +77,8 @@ class ContactPage
                 'name' => 'Offices',
                 'description' => 'Office / branch information cards.',
                 'fields' => [
-                    'subtitle' => ['label' => 'Subtitle', 'type' => 'text', 'default' => 'Our Offices'],
-                    'title' => ['label' => 'Title', 'type' => 'textarea', 'default' => 'Visit Us'],
+                    'subtitle' => ['label' => 'Subtitle', 'type' => 'text', 'default' => 'Visit Us'],
+                    'title' => ['label' => 'Title', 'type' => 'textarea', 'default' => 'Our Office'],
                 ],
                 'repeaters' => [
                     'items' => [
@@ -76,12 +87,12 @@ class ContactPage
                         'fields' => [
                             'name' => ['label' => 'Office Name', 'type' => 'text'],
                             'address' => ['label' => 'Address', 'type' => 'textarea'],
-                            'phone' => ['label' => 'Phone', 'type' => 'text'],
-                            'email' => ['label' => 'Email', 'type' => 'text'],
+                            'phone' => ['label' => 'Phone(s)', 'type' => 'text', 'help' => 'Separate several numbers with commas.'],
+                            'email' => ['label' => 'Email(s)', 'type' => 'text', 'help' => 'Separate several addresses with commas.'],
                             'hours' => ['label' => 'Opening Hours', 'type' => 'text'],
                         ],
                         'default' => [
-                            ['name' => 'Head Office', 'address' => '2464 Royal Ln. Mesa, New Jersey 45463', 'phone' => '+125 (895) 658 568', 'email' => 'info@sigreenenergy.com', 'hours' => 'Mon-Fri 09 am-05 pm'],
+                            ['name' => 'Head Office', 'address' => Company::ADDRESS, 'phone' => Company::PHONE . ', ' . Company::PHONE_2, 'email' => Company::EMAIL . ', ' . Company::EMAIL_2, 'hours' => ''],
                         ],
                     ],
                 ],
@@ -94,7 +105,7 @@ class ContactPage
                     'embed' => [
                         'label' => 'Google Maps Embed URL or <iframe> Code',
                         'type' => 'textarea',
-                        'default' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830894606!2d-74.11976383964463!3d40.69766374865767!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sbd!4v1652012644726!5m2!1sen!2sbd',
+                        'default' => Company::MAP_EMBED,
                         'help' => 'Google Maps > Share > Embed a map. Paste the whole <iframe> code or just its src URL.',
                     ],
                 ],

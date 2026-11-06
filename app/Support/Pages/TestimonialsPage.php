@@ -9,6 +9,11 @@ class TestimonialsPage extends ListingPage
         return ['label' => 'Testimonials Page', 'route' => 'testimonials', 'views' => 'frontend.testimonials.sections'];
     }
 
+    public static function cta(): array
+    {
+        return ['title' => 'Ready to Start Your Solar Project?', 'text' => 'Talk to Si Green Energy about clean, reliable solar power for your home or business.', 'button_text' => 'Get a Free Solar Consultation'];
+    }
+
     protected static function title(): string
     {
         return 'Testimonials';
@@ -16,14 +21,14 @@ class TestimonialsPage extends ListingPage
 
     protected static function metaDescription(): string
     {
-        return 'What our customers say about SI Green Energy.';
+        return 'Customer feedback about solar systems designed and installed by Si Green Energy.';
     }
 
     protected static function listingFields(): array
     {
         return [
             'per_page' => ['label' => 'Testimonials per Page', 'type' => 'number', 'default' => 10],
-            'empty_text' => ['label' => 'Text When Empty', 'type' => 'text', 'default' => 'No testimonials yet.'],
+            'empty_text' => ['label' => 'Text When Empty', 'type' => 'text', 'default' => 'Customer feedback will be published here soon.'],
         ];
     }
 }

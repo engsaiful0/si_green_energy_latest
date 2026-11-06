@@ -27,7 +27,7 @@
     @endif
 
     <!-- Favicons -->
-    <link rel="icon" type="image/png" href="{{ \App\Support\Media::url($site['favicon']) }}">
+    <link rel="icon" type="{{ str_ends_with($site['favicon'], '.svg') ? 'image/svg+xml' : 'image/png' }}" href="{{ \App\Support\Media::url($site['favicon']) }}">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
@@ -59,19 +59,8 @@
     </div>
     <!-- Preloader End -->
 
-    <!-- Dark Light Start -->
-    <div class="switch__tab">
-        <span class="switch__tab-btn active light-mode-title">Light</span>
-        <span class="mode__switch" onclick="darkLight()"><span></span></span>
-        <span class="switch__tab-btn dark-mode-title">Dark</span>
-    </div>
-    <!-- Dark Light End -->
-
     <!-- Top Bar Component -->
     @include('components.frontend.topbar')
-
-    <!-- Search Box Component -->
-    @include('components.frontend.searchbox')
 
     <!-- Hamburger Sidebar Component -->
     @include('components.frontend.sidebar')
@@ -96,6 +85,8 @@
     </div>
     <!-- Scroll Btn End -->
 
+    <!-- The theme's light/dark switch is not used: clear any dark mode saved by an earlier visit. -->
+    <script>try { localStorage.removeItem('PageTheme'); } catch (e) {}</script>
     <!-- Main JS -->
     <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script>
     <!-- Bootstrap JS -->

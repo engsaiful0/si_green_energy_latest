@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', $page->meta_title ?? $page->title . ' - SI Green Energy')
+@section('title', $page->meta_title ?? $page->title . ' - Si Green Energy')
 @section('meta_description', $page->meta_description ?? Str::limit(strip_tags($page->content), 160))
 
 @section('content')

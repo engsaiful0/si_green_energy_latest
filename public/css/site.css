@@ -91,3 +91,37 @@
   max-height: 620px;
   object-fit: cover;
 }
+
+/* --- Call to action: optional description under the heading --- */
+.footer__cta-area-text {
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 620px;
+  margin: -10px 0 28px;
+}
+@media (max-width: 991px) {
+  .footer__cta-area-text {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+}
+
+.catalog-specs th { width: 40%; font-weight: 600; color: var(--text-heading-color); }
+.catalog-specs th, .catalog-specs td { padding: 12px 16px; border-color: var(--border-color-1, #E6E5DF); }
+
+/* --- Si Green Energy logo (SVG wordmark is wider than the theme logo) --- */
+.header__area-menubar-left-logo a img {
+  max-width: 190px;
+  width: 190px;
+}
+.menu__bar-popup-top .logo img,
+.header__area-menubar-right-sidebar-popup-logo img,
+.footer__area-widget .logo img {
+  max-width: 210px;
+  width: 210px;
+}
+@media (max-width: 575px) {
+  .header__area-menubar-left-logo a img {
+    width: 160px;
+  }
+}

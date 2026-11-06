@@ -2,6 +2,7 @@
 
 namespace App\Support\Pages;
 
+use App\Support\Company;
 use App\Support\PageSections;
 
 /**
@@ -31,7 +32,16 @@ abstract class CatalogPage
 
     public static function pageSection(): array
     {
-        return PageSections::pageSettings(true, 'Our ' . static::label(), 'Explore the ' . strtolower(static::label()) . ' offered by SI Green Energy.');
+        return PageSections::pageSettings(true, 'Our ' . static::label(), 'Explore the ' . strtolower(static::label()) . ' offered by Si Green Energy.');
+    }
+
+    public static function cta(): array
+    {
+        return match (static::route()) {
+            'products' => ['title' => 'Need Help Choosing the Right Equipment?', 'text' => 'Tell us what you want to power and we will recommend suitable panels, inverters and batteries.', 'button_text' => 'Request a Quotation'],
+            'solutions' => ['title' => 'Request a Solar Solution', 'text' => 'Share your site details and energy needs, and our engineers will propose a solution that fits.', 'button_text' => 'Request a Solution'],
+            default => ['title' => 'Get a Free Solar Consultation', 'text' => 'Talk to our engineers about design, installation or maintenance of your solar system.', 'button_text' => 'Book a Consultation'],
+        };
     }
 
     public static function sections(): array
@@ -54,7 +64,7 @@ abstract class CatalogPage
                 'description' => 'Two images with tabbed text and check lists.',
                 'fields' => [
                     'subtitle' => ['label' => 'Subtitle', 'type' => 'text', 'default' => 'Who We Are'],
-                    'title' => ['label' => 'Title', 'type' => 'textarea', 'default' => 'Innovation in Solar Excellence'],
+                    'title' => ['label' => 'Title', 'type' => 'textarea', 'default' => 'Solar Systems Built Around Your Needs'],
                     'image_one' => ['label' => 'Large Image', 'type' => 'image', 'default' => 'img/pages/who-we-1.jpg'],
                     'image_two' => ['label' => 'Small Image', 'type' => 'image', 'default' => 'img/pages/who-we-2.jpg'],
                     'background_image' => ['label' => 'Background', 'type' => 'image', 'default' => 'img/shape/shape-16.png'],
@@ -69,9 +79,9 @@ abstract class CatalogPage
                             'points' => ['label' => 'Check List (one per line)', 'type' => 'textarea'],
                         ],
                         'default' => [
-                            ['title' => 'Modern Technology', 'text' => 'We use proven, high-efficiency panels, inverters and batteries backed by long manufacturer warranties.', 'points' => "Tier-1 Panels\nSmart Monitoring\nBattery Storage\nCertified Installers"],
-                            ['title' => 'Solar Solution', 'text' => 'Every system is designed around your site, your consumption and your budget for the best possible return.', 'points' => "Free Site Survey\nCustom Design\nFinancing Options\nFast Installation"],
-                            ['title' => 'Philosophy', 'text' => 'Clean energy should be simple. We handle everything from permits to maintenance so you do not have to.', 'points' => "Transparent Pricing\nLocal Support\nLong-term Care\nSafety First"],
+                            ['title' => 'Our Approach', 'text' => 'We start with your electricity bills, load profile and site conditions, then design a system that matches how you actually use power.', 'points' => "Site survey\nLoad assessment\nClear proposal\nNo-obligation advice"],
+                            ['title' => 'Quality', 'text' => 'We select established panel, inverter and battery technologies and install them with proper mounting, cabling and electrical protection.', 'points' => "Proven technologies\nCorrect cable sizing\nDC and AC protection\nSecure mounting"],
+                            ['title' => 'Support', 'text' => 'Solar systems need periodic care. We provide cleaning, inspection, troubleshooting and repair after installation.', 'points' => "Maintenance visits\nPerformance checks\nFault finding\nLocal team in Chattogram"],
                         ],
                     ],
                 ],
@@ -82,12 +92,12 @@ abstract class CatalogPage
                 'description' => 'Questions and answers (also shown on the ' . strtolower(static::singular()) . ' details pages).',
                 'fields' => [
                     'subtitle' => ['label' => 'Subtitle', 'type' => 'text', 'default' => 'FAQs'],
-                    'title' => ['label' => 'Title', 'type' => 'textarea', 'default' => 'Unlock Answers Explore FAQs'],
-                    'text' => ['label' => 'Text', 'type' => 'textarea', 'default' => 'Answers to the questions we hear most often from homeowners and businesses.'],
+                    'title' => ['label' => 'Title', 'type' => 'textarea', 'default' => 'Frequently Asked Questions'],
+                    'text' => ['label' => 'Text', 'type' => 'textarea', 'default' => 'Answers to the questions we hear most often from homeowners and businesses in Bangladesh.'],
                     'box_icon' => ['label' => 'Highlight Icon', 'type' => 'icon', 'default' => 'flaticon-trophy-1'],
-                    'box_number' => ['label' => 'Highlight Number', 'type' => 'text', 'default' => '20'],
-                    'box_suffix' => ['label' => 'Highlight Suffix', 'type' => 'text', 'default' => '+'],
-                    'box_label' => ['label' => 'Highlight Label', 'type' => 'text', 'default' => 'Winning awards'],
+                    'box_number' => ['label' => 'Highlight Number (optional)', 'type' => 'text', 'default' => '', 'help' => 'Leave empty to hide the highlight box.'],
+                    'box_suffix' => ['label' => 'Highlight Suffix', 'type' => 'text', 'default' => ''],
+                    'box_label' => ['label' => 'Highlight Label', 'type' => 'text', 'default' => ''],
                 ],
                 'repeaters' => [
                     'items' => [
@@ -98,9 +108,10 @@ abstract class CatalogPage
                             'answer' => ['label' => 'Answer', 'type' => 'textarea'],
                         ],
                         'default' => [
-                            ['question' => 'How much solar energy do I need?', 'answer' => 'It depends on your consumption. We review your bills and roof space during a free survey and size the system to match.'],
-                            ['question' => 'How long does installation take?', 'answer' => 'Most residential systems are installed in one to three days once permits are approved.'],
-                            ['question' => 'What maintenance is required?', 'answer' => 'Very little: periodic cleaning and an annual inspection, which our maintenance plans cover.'],
+                            ['question' => 'What size of solar system do I need?', 'answer' => 'It depends on how much electricity you use, when you use it, and the space available. We review your electricity bills and loads during a site survey and size the system accordingly.'],
+                            ['question' => 'Should I choose an on-grid, off-grid or hybrid system?', 'answer' => 'On-grid systems work with the utility supply and need no batteries. Off-grid systems run independently with batteries. Hybrid systems combine both, so they can keep essential loads running during power cuts. We recommend the right type after understanding your needs.'],
+                            ['question' => 'Do solar panels work during the monsoon?', 'answer' => 'Yes. Panels still produce electricity on cloudy days, although output is lower than in full sunshine. Systems are sized with seasonal variation in mind.'],
+                            ['question' => 'What maintenance does a solar system need?', 'answer' => 'Mainly regular cleaning of the panels to remove dust, and periodic inspection of connections, protection devices, inverters and batteries. We offer maintenance and inspection services.'],
                         ],
                     ],
                 ],
@@ -118,7 +129,7 @@ abstract class CatalogPage
                         'label' => 'Words',
                         'item_label' => 'Word',
                         'fields' => ['text' => ['label' => 'Text', 'type' => 'text']],
-                        'default' => [['text' => 'Solar Panel'], ['text' => 'Wind Turbines'], ['text' => 'Hydropower'], ['text' => 'Maintenance']],
+                        'default' => [['text' => 'Solar Panels'], ['text' => 'Inverters'], ['text' => 'Battery Storage'], ['text' => 'Installation'], ['text' => 'Maintenance']],
                     ],
                 ],
             ],
@@ -130,7 +141,7 @@ abstract class CatalogPage
                 'manage' => ['label' => 'Manage Testimonials', 'route' => 'admin.testimonials.index'],
                 'fields' => [
                     'subtitle' => ['label' => 'Subtitle', 'type' => 'text', 'default' => 'Testimonial'],
-                    'title' => ['label' => 'Title', 'type' => 'textarea', 'default' => 'Shining Success Stories'],
+                    'title' => ['label' => 'Title', 'type' => 'textarea', 'default' => 'What Our Customers Say'],
                     'limit' => ['label' => 'Number of Testimonials', 'type' => 'number', 'default' => 6],
                 ],
             ],
@@ -146,8 +157,8 @@ abstract class CatalogPage
                     'downloads_title' => ['label' => 'Downloads Title', 'type' => 'text', 'default' => 'Download'],
                     'help_title' => ['label' => 'Help Box Title', 'type' => 'textarea', 'default' => 'Need help choosing the right system?'],
                     'help_label' => ['label' => 'Help Box Label', 'type' => 'text', 'default' => 'Quick Help'],
-                    'help_phone' => ['label' => 'Help Box Phone', 'type' => 'text', 'default' => '+125 (895) 658 568'],
-                    'help_image' => ['label' => 'Help Box Background', 'type' => 'image', 'default' => 'img/service/service-2.jpg'],
+                    'help_phone' => ['label' => 'Help Box Phone', 'type' => 'text', 'default' => Company::PHONE],
+                    'help_image' => ['label' => 'Help Box Background', 'type' => 'image', 'default' => 'img/service/service-4.jpg'],
                 ],
                 'repeaters' => [
                     'downloads' => [

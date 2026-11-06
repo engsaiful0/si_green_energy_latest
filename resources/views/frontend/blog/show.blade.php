@@ -50,9 +50,7 @@
                         <div><h5>{{ $post->excerpt }}</h5></div>
                     </div>
                     @endif
-                    @foreach(array_filter(preg_split('/\R{2,}/', trim((string) $post->content))) as $paragraph)
-                    <p>{!! nl2br(e($paragraph)) !!}</p>
-                    @endforeach
+                    @include('frontend.partials.rich-text', ['text' => $post->content])
 
                     @if($post->tags->isNotEmpty())
                     <div class="blog__details-left-tag">
@@ -103,4 +101,6 @@
     </div>
 </div>
 <!-- Blog Details Area End -->
+
+@include('frontend.partials.page-cta', ['page' => 'blog'])
 @endsection

@@ -19,7 +19,10 @@
 @else
 <div class="mb-3">
     <label class="form-label">{{ $field['label'] }}</label>
-    @if($type === 'textarea')
+    @if($type === 'longtext')
+        <textarea class="form-control @error($errorKey) is-invalid @enderror" name="{{ $name }}" rows="22">{{ $value }}</textarea>
+        @if(!empty($field['help']))<small class="text-muted">{{ $field['help'] }}</small>@endif
+    @elseif($type === 'textarea')
         <textarea class="form-control @error($errorKey) is-invalid @enderror" name="{{ $name }}" rows="3">{{ $value }}</textarea>
         <small class="text-muted">{{ $field['help'] ?? 'Line breaks are kept.' }}</small>
     @elseif($type === 'icon')

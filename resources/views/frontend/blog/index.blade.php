@@ -45,4 +45,6 @@
     </div>
 </div>
 <!-- Blog Standard Area End -->
+
+@include('frontend.partials.page-cta', ['page' => 'blog'])
 @endsection

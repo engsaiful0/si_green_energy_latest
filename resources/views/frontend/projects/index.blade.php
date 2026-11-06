@@ -50,4 +50,6 @@
     </div>
 </div>
 <!-- Project Grid Area End -->
+
+@include('frontend.partials.page-cta', ['page' => 'projects'])
 @endsection

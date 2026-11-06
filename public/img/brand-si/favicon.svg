@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>Si Green Energy</title>
+  <circle cx="32" cy="32" r="30" fill="#57B33E"/>
+  <path d="M19 44 C16 24 30 13 48 15 C50 33 38 46 19 44 Z" fill="#FFFFFF"/>
+  <path d="M19 44 L40 23" stroke="#57B33E" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -44,4 +44,6 @@
     </div>
 </div>
 <!-- Testimonial Area End -->
+
+@include('frontend.partials.page-cta', ['page' => 'testimonials'])
 @endsection

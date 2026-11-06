@@ -43,15 +43,16 @@
                                 @php
                                     $definition = $definitions[$section->section_key];
                                     $isBlock = $definition['render'] ?? true;
+                                    $canToggle = $isBlock || ($definition['toggle'] ?? false);
                                 @endphp
-                                <tr class="{{ !$isBlock ? 'table-light' : ($section->is_active ? '' : 'table-secondary text-muted') }}">
+                                <tr class="{{ !$canToggle ? 'table-light' : ($section->is_active ? '' : 'table-secondary text-muted') }}">
                                     <td>
                                         @if($isBlock)
                                         <input type="number" class="form-control form-control-sm" min="0" max="999"
                                                name="sections[{{ $section->id }}][order]" value="{{ $section->order }}"
                                                aria-label="Order of {{ $section->section_name }}">
                                         @else
-                                        <span class="text-muted small"><i class="fas fa-cog"></i> Settings</span>
+                                        <span class="text-muted small"><i class="fas fa-cog"></i> {{ $canToggle ? 'Page bottom' : 'Settings' }}</span>
                                         @endif
                                     </td>
                                     <td>
@@ -68,10 +69,11 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if(!$isBlock)
+                                        @if(!$canToggle)
                                         <span class="badge bg-light text-dark border">Always</span>
                                         @else
                                         <div class="form-check form-switch mb-0">
+                                            <input type="hidden" name="sections[{{ $section->id }}][is_active]" value="0">
                                             <input class="form-check-input" type="checkbox" value="1"
                                                    name="sections[{{ $section->id }}][is_active]" id="active-{{ $section->id }}"
                                                    {{ $section->is_active ? 'checked' : '' }}>

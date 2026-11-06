@@ -16,8 +16,12 @@
                     <h6>{{ $office['name'] ?? '' }}</h6>
                     <ul class="list-unstyled mb-0">
                         @if(!empty($office['address']))<li><i class="fal fa-map-marker-alt"></i><span>{!! nl2br(e($office['address'])) !!}</span></li>@endif
-                        @if(!empty($office['phone']))<li><i class="fal fa-phone-alt"></i><a href="{{ Link::tel($office['phone']) }}">{{ $office['phone'] }}</a></li>@endif
-                        @if(!empty($office['email']))<li><i class="fal fa-envelope"></i><a href="mailto:{{ $office['email'] }}">{{ $office['email'] }}</a></li>@endif
+                        @foreach(array_filter(array_map('trim', explode(',', $office['phone'] ?? ''))) as $phone)
+                        <li><i class="fal fa-phone-alt"></i><a href="{{ Link::tel($phone) }}">{{ $phone }}</a></li>
+                        @endforeach
+                        @foreach(array_filter(array_map('trim', explode(',', $office['email'] ?? ''))) as $mail)
+                        <li><i class="fal fa-envelope"></i><a href="mailto:{{ $mail }}">{{ $mail }}</a></li>
+                        @endforeach
                         @if(!empty($office['hours']))<li><i class="fal fa-clock"></i><span>{{ $office['hours'] }}</span></li>@endif
                     </ul>
                 </div>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 565" width="850" height="565" role="img" aria-label="Solar street light">
+  <title>Solar street light</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EEF7EA"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E6E9ED"/>
+    </linearGradient>
+  </defs>
+  <rect width="850" height="565" fill="url(#bg)"/>
+  <circle cx="735" cy="105" r="52" fill="#57B33E" opacity="0.14"/>
+  <circle cx="735" cy="105" r="30" fill="#57B33E" opacity="0.22"/>
+  <ellipse cx="425" cy="500" rx="260" ry="18" fill="#1F242C" opacity="0.08"/>
+  <g>
+    <rect x="410" y="150" width="22" height="330" rx="8" fill="#9AA3AE"/>
+    <rect x="380" y="470" width="82" height="18" rx="6" fill="#1F242C"/>
+    <path d="M421 210 Q421 170 520 165 H600" fill="none" stroke="#9AA3AE" stroke-width="16" stroke-linecap="round"/>
+    <rect x="560" y="150" width="170" height="44" rx="14" fill="#1F242C"/>
+    <rect x="575" y="190" width="140" height="10" rx="5" fill="#FFE58A"/>
+    <path d="M580 205 L540 330 H750 L710 205 Z" fill="#FFE58A" opacity="0.35"/>
+    <g transform="translate(300 70) rotate(-12)">
+      <rect x="0" y="0" width="230" height="110" rx="8" fill="#20416E" stroke="#1F242C" stroke-width="4"/>
+      <path d="M57 0 V110 M115 0 V110 M172 0 V110 M0 55 H230" stroke="#6FA0D8" stroke-width="3"/>
+    </g>
+    <rect x="405" y="300" width="32" height="70" rx="6" fill="#57B33E"/>
+  </g>
+</svg>

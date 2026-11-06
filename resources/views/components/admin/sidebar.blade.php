@@ -44,7 +44,7 @@
     <!-- Logo -->
     <div class="logo">
         <a href="{{ route('admin.dashboard') }}">
-            <img src="{{ asset('img/logo-2.png') }}" alt="{{ config('app.name') }}">
+            <img src="{{ asset('img/brand-si/logo-light.svg') }}" alt="{{ config('app.name') }}">
         </a>
     </div>
 
@@ -77,6 +77,16 @@
             <li class="nav-item">
                 <a class="nav-link {{ $isContent('company-profile') ? 'active' : '' }}" href="{{ route('admin.content.index', 'company-profile') }}">
                     <i class="fas fa-building"></i> Company Profile CMS
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $isContent('privacy') ? 'active' : '' }}" href="{{ route('admin.content.index', 'privacy') }}">
+                    <i class="fas fa-user-shield"></i> Privacy Policy
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $isContent('terms') ? 'active' : '' }}" href="{{ route('admin.content.index', 'terms') }}">
+                    <i class="fas fa-file-contract"></i> Terms & Conditions
                 </a>
             </li>
         </ul>
@@ -134,6 +144,11 @@
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.seo.*') ? 'active' : '' }}" href="{{ route('admin.seo.index') }}">
                     <i class="fas fa-search"></i> SEO Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.content.references') ? 'active' : '' }}" href="{{ route('admin.content.references') }}">
+                    <i class="fas fa-book"></i> Content References
                 </a>
             </li>
             <li class="nav-item">

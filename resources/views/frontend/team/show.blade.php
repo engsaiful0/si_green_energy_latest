@@ -115,4 +115,6 @@
     </div>
 </div>
 <!-- Team Details Area End -->
+
+@include('frontend.partials.page-cta', ['page' => 'team'])
 @endsection

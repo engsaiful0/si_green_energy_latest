@@ -42,7 +42,7 @@
                         <h5 class="card-title mb-3">Content</h5>
                         <div class="row">
                             @foreach($textFields as $name => $field)
-                            <div class="{{ in_array($field['type'] ?? 'text', ['textarea']) ? 'col-12' : 'col-md-6' }}">
+                            <div class="{{ in_array($field['type'] ?? 'text', ['textarea', 'longtext']) ? 'col-12' : 'col-md-6' }}">
                                 @include('admin.content._field', [
                                     'field' => $field,
                                     'name' => "content[{$name}]",
@@ -91,7 +91,7 @@
                 <div class="card shadow-sm mb-3">
                     <div class="card-body">
                         <h5 class="card-title mb-3">Publish</h5>
-                        @if(($definition['render'] ?? true))
+                        @if(($definition['render'] ?? true) || ($definition['toggle'] ?? false))
                         <div class="form-check form-switch mb-3">
                             <input class="form-check-input" type="checkbox" name="is_active" value="1" id="is_active"
                                    {{ old('is_active', $section->is_active) ? 'checked' : '' }}>

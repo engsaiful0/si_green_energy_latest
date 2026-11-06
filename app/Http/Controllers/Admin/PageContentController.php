@@ -26,6 +26,19 @@ class PageContentController extends Controller
         return view('admin.content.pages', compact('pages'));
     }
 
+    /**
+     * Content sources and review notes for the seeded content (CONTENT_SOURCES.md).
+     */
+    public function references()
+    {
+        $file = base_path('CONTENT_SOURCES.md');
+        $html = is_file($file)
+            ? \Illuminate\Support\Str::markdown(file_get_contents($file), ['html_input' => 'escape', 'allow_unsafe_links' => false], [new \League\CommonMark\Extension\Autolink\AutolinkExtension()])
+            : '<p>No content sources recorded.</p>';
+
+        return view('admin.content.references', compact('html'));
+    }
+
     public function index(string $page)
     {
         $this->ensurePage($page);
@@ -46,15 +59,17 @@ class PageContentController extends Controller
 
         $validated = $request->validate([
             'sections' => ['required', 'array'],
-            'sections.*.order' => ['required', 'integer', 'min:0', 'max:999'],
+            'sections.*.order' => ['nullable', 'integer', 'min:0', 'max:999'],
             'sections.*.is_active' => ['nullable', 'boolean'],
         ]);
 
         foreach ($validated['sections'] as $id => $values) {
-            PageSection::forPage($page)->whereKey($id)->where('section_key', '!=', PageSections::PAGE_SETTINGS)->update([
-                'order' => $values['order'],
-                'is_active' => !empty($values['is_active']),
-            ]);
+            $changes = ['is_active' => !empty($values['is_active'])];
+            if (isset($values['order'])) {
+                $changes['order'] = $values['order'];
+            }
+
+            PageSection::forPage($page)->whereKey($id)->where('section_key', '!=', PageSections::PAGE_SETTINGS)->update($changes);
         }
 
         return redirect()->route('admin.content.index', $page)
@@ -187,6 +202,7 @@ class PageContentController extends Controller
         return match ($field['type'] ?? 'text') {
             'number' => [$key => ['nullable', 'numeric', 'min:0', 'max:1000000']],
             'textarea' => [$key => ['nullable', 'string', 'max:5000']],
+            'longtext' => [$key => ['nullable', 'string', 'max:50000']],
             'image' => [$key => ['nullable', 'string', 'max:500'], $fileKey => Media::rules()],
             default => [$key => ['nullable', 'string', 'max:500']],
         };

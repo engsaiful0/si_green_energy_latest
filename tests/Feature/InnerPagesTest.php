@@ -15,8 +15,8 @@ use App\Models\TeamMember;
 use App\Models\Testimonial;
 use App\Models\User;
 use App\Support\PageSections;
-use Database\Seeders\CatalogContentSeeder;
-use Database\Seeders\HomepageContentSeeder;
+use App\Models\ProjectCategory;
+use Database\Seeders\SiGreenEnergyContentSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -33,7 +33,81 @@ class InnerPagesTest extends TestCase
         parent::setUp();
 
         $this->admin = User::factory()->create();
-        $this->seed([HomepageContentSeeder::class, CatalogContentSeeder::class]);
+        $this->seed(SiGreenEnergyContentSeeder::class);
+
+        // The seeder adds no team members, projects or testimonials (real ones are added by admins).
+        TeamMember::create(['full_name' => 'Test Engineer', 'slug' => 'test-engineer', 'position' => 'Solar Design Engineer', 'photo' => 'img/team/team-1.jpg', 'status' => 'active']);
+        Project::create([
+            'name' => 'Test Rooftop Project', 'slug' => 'test-rooftop-project', 'short_description' => 'Rooftop system.', 'description' => '',
+            'featured_image' => 'img/portfolio/portfolio-1.jpg', 'status' => 'published',
+            'category_id' => ProjectCategory::create(['name' => 'Rooftop', 'slug' => 'rooftop', 'is_active' => true])->id,
+        ]);
+        Testimonial::create(['client_name' => 'Test Customer', 'rating' => 5, 'testimonial' => 'Good work.', 'status' => 'approved']);
+    }
+
+    public function test_seeded_catalog_is_complete(): void
+    {
+        $this->assertSame(8, ProductCategory::count());
+        $this->assertGreaterThanOrEqual(10, Product::published()->count());
+        $this->assertSame(10, Service::published()->count());
+        $this->assertSame(10, SolutionCategory::count());
+        $this->assertSame(10, Solution::published()->count());
+        $this->assertSame(8, BlogPost::published()->count());
+        $this->assertTrue(Solution::all()->every(fn ($solution) => count($solution->applications) > 0));
+        $this->assertTrue(BlogPost::all()->every(fn ($post) => $post->meta_description && $post->meta_title));
+    }
+
+    public function test_branding_contact_details_and_cta_on_every_page(): void
+    {
+        $urls = ['/', '/company-profile', '/testimonials', '/team', '/products', '/solutions', '/services', '/projects', '/blog', '/contact', '/privacy', '/terms',
+            '/products/' . Product::first()->slug, '/solutions/' . Solution::first()->slug, '/services/' . Service::first()->slug,
+            '/blog/' . BlogPost::first()->slug, '/projects/test-rooftop-project', '/team/test-engineer'];
+
+        foreach ($urls as $url) {
+            $html = $this->get($url)->assertOk()->getContent();
+            $this->assertStringContainsString('class="footer__cta"', $html, "CTA missing on {$url}");
+            $this->assertStringContainsString('href="tel:01813541292"', $html, "phone link missing on {$url}");
+            $this->assertStringContainsString('https://facebook.com/sigreenenergy', $html, "Facebook missing on {$url}");
+            $this->assertStringNotContainsString('switch__tab', $html, "theme switch on {$url}");
+            $this->assertStringNotContainsString('header__area-menubar-right-search-icon', $html, "search icon on {$url}");
+            $this->assertDoesNotMatchRegularExpression('/\bSlaze\b|ThemeOri|SI Green Energy/', str_replace('flaticon_slaze', '', $html), "template branding on {$url}");
+        }
+
+        $this->get('/contact')
+            ->assertSee('mailto:engrmisbah08@gmail.com', false)
+            ->assertSee('mailto:s.igreenenergy@gmail.com', false)
+            ->assertSee('tel:01805993540', false)
+            ->assertSee('Ayesha Bhaban, 1st Floor, East Bakalia Access Road, Chattogram, Bangladesh');
+    }
+
+    public function test_page_cta_can_be_edited_and_hidden(): void
+    {
+        $cta = PageSection::forPage('services')->where('section_key', 'cta')->firstOrFail();
+
+        $this->actingAs($this->admin)->put(route('admin.content.update', ['services', $cta]), [
+            'is_active' => 1,
+            'content' => ['title' => 'Book Your Site Survey', 'button_text' => 'Book Now', 'button_link' => '/contact'],
+        ])->assertRedirect();
+        $this->get('/services')->assertSee('Book Your Site Survey')->assertSee('Book Now');
+
+        $this->actingAs($this->admin)->put(route('admin.content.update', ['services', $cta]), [
+            'content' => ['title' => 'Book Your Site Survey'],
+        ]);
+        $this->get('/services')->assertDontSee('Book Your Site Survey');
+    }
+
+    public function test_legal_pages_are_editable(): void
+    {
+        $this->get('/privacy')->assertOk()->assertSee('Privacy Policy')->assertSee('engrmisbah08@gmail.com');
+        $this->get('/terms')->assertOk()->assertSee('laws of Bangladesh');
+
+        $section = PageSection::forPage('terms')->where('section_key', 'content')->firstOrFail();
+        $this->actingAs($this->admin)->put(route('admin.content.update', ['terms', $section]), [
+            'is_active' => 1,
+            'content' => ['updated' => 'January 2027', 'body' => "Custom terms intro.\n\nNew Heading\n\nMore text."],
+        ])->assertRedirect();
+
+        $this->get('/terms')->assertSee('Custom terms intro.')->assertSee('<h4 class="mt-35 mb-15">New Heading</h4>', false);
     }
 
     public function test_every_inner_page_renders(): void
