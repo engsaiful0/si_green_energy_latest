@@ -44,7 +44,7 @@ class HomepageTest extends TestCase
     public function test_homepage_works_with_an_empty_database(): void
     {
         $this->get('/')->assertOk()->assertSee('Your Trusted Energy Partner');
-        $this->assertSame(13, PageSection::homepage()->count());
+        $this->assertSame(count(\App\Support\PageSections::definitions('home')), PageSection::homepage()->count());
     }
 
     public function test_hidden_sections_are_not_rendered(): void
@@ -57,7 +57,7 @@ class HomepageTest extends TestCase
 
     public function test_admin_pages_require_login(): void
     {
-        $this->get('/admin/homepage-sections')->assertRedirect(route('admin.login'));
+        $this->get('/admin/content/home')->assertRedirect(route('admin.login'));
         $this->get('/admin/partners')->assertRedirect(route('admin.login'));
     }
 
@@ -68,7 +68,7 @@ class HomepageTest extends TestCase
         $section = $this->section('features');
 
         $this->actingAs($this->admin())
-            ->put(route('admin.homepage-sections.update', $section), [
+            ->put(route('admin.content.update', ['home', $section]), [
                 'is_active' => 1,
                 'content' => [
                     'title' => 'Powering Tomorrow',
@@ -79,12 +79,12 @@ class HomepageTest extends TestCase
                 ],
                 'files' => ['client_image' => UploadedFile::fake()->image('clients.png')],
             ])
-            ->assertRedirect(route('admin.homepage-sections.edit', $section));
+            ->assertRedirect(route('admin.content.edit', ['home', $section]));
 
         $content = $section->fresh()->content;
         $this->assertSame('Powering Tomorrow', $content['title']);
         $this->assertCount(1, $content['items'], 'Empty repeater rows are dropped');
-        $this->assertStringStartsWith('storage/uploads/homepage/features/', $content['client_image']);
+        $this->assertStringStartsWith('storage/uploads/pages/home/', $content['client_image']);
         Storage::disk('public')->assertExists(substr($content['client_image'], strlen('storage/')));
 
         $this->get('/')->assertSee('Powering Tomorrow')->assertSee('Award Winning');
@@ -93,7 +93,7 @@ class HomepageTest extends TestCase
     public function test_admin_can_reorder_and_hide_sections(): void
     {
         $this->get('/');
-        $sections = PageSection::homepage()->get();
+        $sections = PageSection::homepage()->where('section_key', '!=', 'page')->get();
         $payload = [];
         foreach ($sections as $section) {
             $payload[$section->id] = ['order' => $section->section_key === 'blog' ? 0 : $section->order,
@@ -101,8 +101,8 @@ class HomepageTest extends TestCase
         }
 
         $this->actingAs($this->admin())
-            ->put(route('admin.homepage-sections.arrange'), ['sections' => $payload])
-            ->assertRedirect(route('admin.homepage-sections.index'));
+            ->put(route('admin.content.arrange', 'home'), ['sections' => $payload])
+            ->assertRedirect(route('admin.content.index', 'home'));
 
         $this->assertSame(0, $this->section('blog')->order);
         $this->assertFalse($this->section('about')->is_active);

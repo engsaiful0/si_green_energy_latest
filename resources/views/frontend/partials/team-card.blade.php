@@ -15,7 +15,7 @@
                 </div>
             </div>
             @endif
-            <h6><a href="{{ route('team.index') }}">{{ $member->full_name }}</a></h6>
+            <h6><a href="{{ route('team.show', $member->slug) }}">{{ $member->full_name }}</a></h6>
             <span>{{ $member->position }}</span>
         </div>
     </div>

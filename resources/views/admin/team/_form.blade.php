@@ -44,11 +44,36 @@
                         @error('experience_years')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-12">
-                        <label class="form-label">Short Bio</label>
+                        <label class="form-label">Short Bio</label> <small class="text-muted">(listing / SEO summary)</small>
                         <textarea class="form-control @error('short_bio') is-invalid @enderror"
                                   name="short_bio" rows="3">{{ old('short_bio', $member->short_bio ?? '') }}</textarea>
                         @error('short_bio')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Profile Details</h5>
+                <div class="mb-3">
+                    <label class="form-label">Biography</label>
+                    <textarea class="form-control @error('bio') is-invalid @enderror" name="bio" rows="6">{{ old('bio', $member->bio ?? '') }}</textarea>
+                    <small class="text-muted">Shown on the member's details page. Leave an empty line between paragraphs.</small>
+                    @error('bio')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Qualifications & Certifications</label>
+                    <textarea class="form-control @error('qualifications') is-invalid @enderror" name="qualifications" rows="4"
+                              placeholder="One per line, e.g. B.Sc. Electrical Engineering">{{ old('qualifications', $member->qualifications ?? '') }}</textarea>
+                    @error('qualifications')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="mb-0">
+                    <label class="form-label">Professional Skills</label>
+                    <textarea class="form-control @error('skills_text') is-invalid @enderror" name="skills_text" rows="4"
+                              placeholder="One per line: Skill name | percent&#10;Solar System Design | 95">{{ old('skills_text', collect($member->skills ?? [])->map(fn ($skill) => ($skill['label'] ?? '') . ' | ' . ($skill['percent'] ?? 0))->implode(PHP_EOL)) }}</textarea>
+                    <small class="text-muted">Shown as progress bars, e.g. <code>Solar System Design | 95</code></small>
+                    @error('skills_text')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
             </div>
         </div>
@@ -69,6 +94,7 @@
                 </div>
             </div>
         </div>
+            @include('admin.partials.seo-fields', ['model' => $member])
     </div>
 
     <div class="col-lg-4">

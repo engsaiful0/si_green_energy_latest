@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\IsCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, IsCategory;
 
     protected $fillable = [
         'parent_id',
@@ -44,6 +45,11 @@ class ProductCategory extends Model
     /**
      * Get the products in this category.
      */
+    public function items()
+    {
+        return $this->products();
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class, 'category_id');

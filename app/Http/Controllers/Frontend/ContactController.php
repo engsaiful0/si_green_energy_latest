@@ -6,20 +6,29 @@ use App\Http\Controllers\Controller;
 use App\Models\ContactMessage;
 use App\Models\QuoteRequest;
 use App\Models\NewsletterSubscriber;
+use App\Support\PageSections;
+use App\Support\SectionData;
+use App\Support\Seo;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
     /**
-     * Display the contact form.
+     * Contact page (Slaze contact-two.html), managed in Admin > Contact Page CMS.
      */
     public function index()
     {
-        return view('frontend.pages.contact');
+        $page = 'contact';
+        $settings = PageSections::settings($page);
+        $sections = PageSections::visible($page);
+        $data = SectionData::load($page, $sections);
+        $seo = Seo::page($page);
+
+        return view('frontend.contact.show', compact('page', 'settings', 'sections', 'data', 'seo'));
     }
 
     /**
-     * Store a contact message.
+     * Store a contact message (contact page and team member pages).
      */
     public function store(Request $request)
     {
@@ -28,12 +37,25 @@ class ContactController extends Controller
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:50'],
             'subject' => ['nullable', 'string', 'max:255'],
-            'message' => ['required', 'string'],
+            'message' => ['required', 'string', 'max:5000'],
+            'website' => ['nullable', 'max:0'], // honeypot: real visitors never fill it
+        ], [
+            'website.max' => 'Your message could not be sent.',
         ]);
 
-        ContactMessage::create($validated);
+        unset($validated['website']);
 
-        return redirect()->back()->with('success', 'Thank you for contacting us! We will get back to you soon.');
+        ContactMessage::create($validated + [
+            'subject' => ($validated['subject'] ?? null) ?: 'Website enquiry',
+            'ip_address' => $request->ip(),
+            'user_agent' => substr((string) $request->userAgent(), 0, 1000),
+            'status' => 'new',
+        ]);
+
+        $contact = PageSections::sections('contact')->firstWhere('section_key', 'contact');
+        $message = $contact?->content['success_message'] ?: 'Thank you for contacting us! We will get back to you soon.';
+
+        return redirect()->to(url()->previous() . '#contact-form')->with('contact_success', $message);
     }
 
     /**
@@ -73,10 +95,11 @@ class ContactController extends Controller
             'name' => ['nullable', 'string', 'max:255'],
         ]);
 
-        $validated['verified_at'] = now();
-        $validated['is_active'] = true;
-
-        NewsletterSubscriber::create($validated);
+        NewsletterSubscriber::create($validated + [
+            'status' => 'subscribed',
+            'subscribed_at' => now(),
+            'ip_address' => $request->ip(),
+        ]);
 
         return redirect()->back()->with('success', 'Thank you for subscribing to our newsletter!');
     }

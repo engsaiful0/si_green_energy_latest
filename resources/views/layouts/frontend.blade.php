@@ -4,14 +4,27 @@
     <!-- Start Meta -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="@yield('meta_description', $site['meta_description'])">
-    <meta name="keywords" content="@yield('meta_keywords', 'solar energy, renewable energy, green energy, solar panels')">
+    {{-- Controllers pass $seo (see App\Support\Seo); older views may still use @section('title') etc. --}}
+    <meta name="description" content="@yield('meta_description', $seo['description'] ?? $site['meta_description'])">
+    @hasSection('meta_keywords')
+    <meta name="keywords" content="@yield('meta_keywords')">
+    @elseif(!empty($seo['keywords']))
+    <meta name="keywords" content="{{ $seo['keywords'] }}">
+    @endif
     <meta name="author" content="{{ $site['site_name'] }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Title of Site -->
-    <title>@yield('title', $site['site_name'])</title>
+    <title>@yield('title', $seo['title'] ?? $site['site_name'])</title>
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta property="og:site_name" content="{{ $site['site_name'] }}">
+    <meta property="og:title" content="@yield('title', $seo['title'] ?? $site['site_name'])">
+    <meta property="og:description" content="@yield('meta_description', $seo['description'] ?? $site['meta_description'])">
+    <meta property="og:url" content="{{ url()->current() }}">
+    @if(!empty($seo['image']))
+    <meta property="og:image" content="{{ $seo['image'] }}">
+    @endif
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="{{ \App\Support\Media::url($site['favicon']) }}">
@@ -30,6 +43,8 @@
     <link rel="stylesheet" href="{{ asset('css/magnific-popup.css') }}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <!-- Site overrides -->
+    <link rel="stylesheet" href="{{ asset('css/site.css') }}?v={{ filemtime(public_path('css/site.css')) }}">
 
     @stack('styles')
 </head>

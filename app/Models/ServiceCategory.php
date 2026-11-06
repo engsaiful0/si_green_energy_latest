@@ -2,19 +2,20 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\IsCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ServiceCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, IsCategory;
 
     protected $fillable = [
-        'parent_id',
         'name',
         'slug',
         'description',
+        'image',
         'icon',
         'is_active',
         'order',
@@ -25,25 +26,16 @@ class ServiceCategory extends Model
         'order' => 'integer',
     ];
 
-    /**
-     * Get the parent category.
-     */
-    public function parent(): BelongsTo
-    {
-        return $this->belongsTo(ServiceCategory::class, 'parent_id');
-    }
 
-    /**
-     * Get the child categories.
-     */
-    public function children()
-    {
-        return $this->hasMany(ServiceCategory::class, 'parent_id');
-    }
 
     /**
      * Get the services in this category.
      */
+    public function items()
+    {
+        return $this->services();
+    }
+
     public function services()
     {
         return $this->hasMany(Service::class, 'category_id');

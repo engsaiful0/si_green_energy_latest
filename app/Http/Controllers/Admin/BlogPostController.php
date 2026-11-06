@@ -4,57 +4,44 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Concerns\HandlesImages;
 use App\Http\Controllers\Controller;
-use App\Models\BlogPost;
 use App\Models\BlogCategory;
+use App\Models\BlogPost;
 use App\Models\BlogTag;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class BlogPostController extends Controller
 {
     use HandlesImages;
 
-    public function index()
+    public function index(Request $request)
     {
-        $posts = BlogPost::with(['category', 'author'])->latest()->paginate(15);
-        return view('admin.blog-posts.index', compact('posts'));
+        $posts = BlogPost::with(['category', 'author'])
+            ->when($request->filled('search'), fn ($query) => $query->where('title', 'like', '%' . $request->search . '%'))
+            ->when($request->filled('category'), fn ($query) => $query->where('category_id', $request->category))
+            ->when(in_array($request->status, ['draft', 'published'], true), fn ($query) => $query->where('status', $request->status))
+            ->latest('publish_date')
+            ->paginate(15)->withQueryString();
+
+        $categories = BlogCategory::orderBy('name')->get();
+
+        return view('admin.blog-posts.index', compact('posts', 'categories'));
     }
 
     public function create()
     {
-        $categories = BlogCategory::all();
-        $tags = BlogTag::all();
-        return view('admin.blog-posts.create', compact('categories', 'tags'));
+        return view('admin.blog-posts.create', $this->formData());
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate(array_merge([
-            'category_id' => ['required', 'exists:blog_categories,id'],
-            'title' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', 'unique:blog_posts', 'regex:/^[a-z0-9-]+$/'],
-            'excerpt' => ['nullable', 'string', 'max:500'],
-            'content' => ['nullable', 'string'],
-            'meta_title' => ['nullable', 'string', 'max:255'],
-            'meta_description' => ['nullable', 'string', 'max:500'],
-            'status' => ['required', 'in:draft,published'],
-            'is_featured' => ['boolean'],
-            'tags' => ['nullable', 'array'],
-            'tags.*' => ['exists:blog_tags,id'],
-        ], $this->imageRules('featured_image', true)));
+        [$data, $tagIds] = $this->validatedData($request);
+        $data = $this->resolveImages($request, $data, ['featured_image'], null, 'blog');
 
-        $validated = $this->resolveImages($request, $validated, ['featured_image'], null, 'blog');
-        $validated['author_id'] = auth()->id();
-        $validated['is_featured'] = $request->has('is_featured');
-        $validated['excerpt'] = $validated['excerpt'] ?? '';
-        $validated['content'] = $validated['content'] ?? '';
-        $validated['publish_date'] = now();
-
-        $post = BlogPost::create(collect($validated)->except('tags')->all());
-
-        if (!empty($validated['tags'])) {
-            $post->tags()->attach($validated['tags']);
-        }
+        $post = BlogPost::create($data);
+        $post->tags()->sync($tagIds);
 
         return redirect()->route('admin.blog-posts.index')
             ->with('success', 'Blog post created successfully.');
@@ -68,40 +55,18 @@ class BlogPostController extends Controller
 
     public function edit(BlogPost $blogPost)
     {
-        $categories = BlogCategory::all();
-        $tags = BlogTag::all();
         $blogPost->load('tags');
-        return view('admin.blog-posts.edit', compact('blogPost', 'categories', 'tags'));
+
+        return view('admin.blog-posts.edit', $this->formData() + compact('blogPost'));
     }
 
     public function update(Request $request, BlogPost $blogPost)
     {
-        $validated = $request->validate(array_merge([
-            'category_id' => ['required', 'exists:blog_categories,id'],
-            'title' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', Rule::unique('blog_posts')->ignore($blogPost->id), 'regex:/^[a-z0-9-]+$/'],
-            'excerpt' => ['nullable', 'string', 'max:500'],
-            'content' => ['nullable', 'string'],
-            'meta_title' => ['nullable', 'string', 'max:255'],
-            'meta_description' => ['nullable', 'string', 'max:500'],
-            'status' => ['required', 'in:draft,published'],
-            'is_featured' => ['boolean'],
-            'tags' => ['nullable', 'array'],
-            'tags.*' => ['exists:blog_tags,id'],
-        ], $this->imageRules('featured_image', true)));
+        [$data, $tagIds] = $this->validatedData($request, $blogPost);
+        $data = $this->resolveImages($request, $data, ['featured_image'], $blogPost, 'blog');
 
-        $validated = $this->resolveImages($request, $validated, ['featured_image'], $blogPost, 'blog');
-        $validated['is_featured'] = $request->has('is_featured');
-        $validated['excerpt'] = $validated['excerpt'] ?? '';
-        $validated['content'] = $validated['content'] ?? '';
-
-        // publish_date is required; a draft that gets published is dated now.
-        if ($validated['status'] === 'published' && $blogPost->status !== 'published') {
-            $validated['publish_date'] = now();
-        }
-
-        $blogPost->update(collect($validated)->except('tags')->all());
-        $blogPost->tags()->sync($validated['tags'] ?? []);
+        $blogPost->update($data);
+        $blogPost->tags()->sync($tagIds);
 
         return redirect()->route('admin.blog-posts.index')
             ->with('success', 'Blog post updated successfully.');
@@ -109,10 +74,63 @@ class BlogPostController extends Controller
 
     public function destroy(BlogPost $blogPost)
     {
-        $blogPost->tags()->detach();
+        // Soft delete: tags and image are kept so the post can be restored.
         $blogPost->delete();
 
         return redirect()->route('admin.blog-posts.index')
             ->with('success', 'Blog post deleted successfully.');
+    }
+
+    private function formData(): array
+    {
+        return [
+            'categories' => BlogCategory::orderBy('name')->get(),
+            'tags' => BlogTag::orderBy('name')->get(),
+            'authors' => User::orderBy('name')->get(['id', 'name']),
+        ];
+    }
+
+    /**
+     * @return array{0: array, 1: array<int>} post attributes and tag ids
+     */
+    private function validatedData(Request $request, ?BlogPost $post = null): array
+    {
+        $request->merge(['slug' => Str::slug($request->input('slug') ?: $request->input('title'))]);
+
+        $data = $request->validate(array_merge([
+            'author_id' => ['required', 'exists:users,id'],
+            'category_id' => ['nullable', 'exists:blog_categories,id'],
+            'title' => ['required', 'string', 'max:255'],
+            'slug' => ['required', 'string', 'max:255', Rule::unique('blog_posts')->ignore($post?->id)],
+            'excerpt' => ['nullable', 'string', 'max:500'],
+            'content' => ['required', 'string'],
+            'tags_input' => ['nullable', 'string', 'max:500'],
+            'reading_time' => ['nullable', 'integer', 'min:1', 'max:600'],
+            'publish_date' => ['required', 'date'],
+            'meta_title' => ['nullable', 'string', 'max:255'],
+            'meta_description' => ['nullable', 'string', 'max:500'],
+            'status' => ['required', 'in:draft,published'],
+        ], $this->imageRules('featured_image', true)));
+
+        $tagIds = $this->tagIds($data['tags_input'] ?? '');
+        unset($data['tags_input']);
+
+        $data['excerpt'] = $data['excerpt'] ?? '';
+        $data['is_featured'] = $request->boolean('is_featured');
+
+        return [$data, $tagIds];
+    }
+
+    /**
+     * "solar, Maintenance" -> ids of existing or newly created tags.
+     */
+    private function tagIds(string $input): array
+    {
+        return collect(explode(',', $input))
+            ->map(fn ($name) => trim($name))
+            ->filter()
+            ->unique(fn ($name) => Str::slug($name))
+            ->map(fn ($name) => BlogTag::firstOrCreate(['slug' => Str::slug($name)], ['name' => Str::limit($name, 100, '')])->id)
+            ->values()->all();
     }
 }

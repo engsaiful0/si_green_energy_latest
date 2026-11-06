@@ -32,6 +32,7 @@ class TeamMember extends Model
         'phone',
         'bio',
         'short_bio',
+        'qualifications',
         'photo',
         'skills',
         'experience_years',
@@ -39,6 +40,8 @@ class TeamMember extends Model
         'is_featured',
         'order',
         'status',
+        'meta_title',
+        'meta_description',
     ];
 
     protected $casts = [

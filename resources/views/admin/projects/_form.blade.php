@@ -67,7 +67,13 @@
                         <small class="text-muted">Where the gallery card links to (optional).</small>
                         @error('website_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Budget ($)</label>
+                        <input type="number" step="0.01" min="0" class="form-control @error('budget') is-invalid @enderror"
+                               name="budget" value="{{ old('budget', $project->budget ?? '') }}">
+                        @error('budget')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label">Video URL</label>
                         <input type="url" class="form-control @error('video_url') is-invalid @enderror"
                                name="video_url" value="{{ old('video_url', $project->video_url ?? '') }}">
@@ -76,6 +82,52 @@
                 </div>
             </div>
         </div>
+            <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Challenge, Solution & Results</h5>
+                @foreach(['challenge' => 'The Challenge', 'solution' => 'The Solution', 'results' => 'The Results'] as $field => $label)
+                <div class="mb-3">
+                    <label class="form-label">{{ $label }}</label>
+                    <textarea class="form-control @error($field) is-invalid @enderror" name="{{ $field }}" rows="4">{{ old($field, $project->{$field} ?? '') }}</textarea>
+                    @error($field)<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                @endforeach
+                <small class="text-muted">Shown on the project details page; empty blocks are hidden.</small>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Gallery</h5>
+                @if($project && $project->images->isNotEmpty())
+                <div class="row g-3 mb-3">
+                    @foreach($project->images as $image)
+                    <div class="col-md-4">
+                        <div class="border rounded p-2 h-100">
+                            <img src="{{ $image->imageUrl() }}" alt="" class="w-100 rounded mb-2" style="height: 110px; object-fit: cover;">
+                            <input type="text" class="form-control form-control-sm mb-1" name="gallery[{{ $image->id }}][alt_text]"
+                                   value="{{ old('gallery.' . $image->id . '.alt_text', $image->alt_text) }}" placeholder="Caption / alt text">
+                            <div class="d-flex gap-1">
+                                <input type="number" min="0" class="form-control form-control-sm" name="gallery[{{ $image->id }}][order]"
+                                       value="{{ old('gallery.' . $image->id . '.order', $image->order) }}" title="Order">
+                                <button type="submit" form="delete-image-{{ $image->id }}" class="btn btn-sm btn-outline-danger" title="Remove"
+                                        onclick="return confirm('Remove this image?')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+                <label class="form-label">Add Images</label>
+                <input type="file" class="form-control @error('gallery_files') is-invalid @enderror @error('gallery_files.*') is-invalid @enderror"
+                       name="gallery_files[]" accept="image/*" multiple>
+                <small class="text-muted">Select several images at once (max 20, 4 MB each).</small>
+                @error('gallery_files')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                @error('gallery_files.*')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+        </div>
+
+        @include('admin.partials.seo-fields', ['model' => $project])
     </div>
 
     <div class="col-lg-4">

@@ -78,6 +78,11 @@ class TeamMemberController extends Controller
             'email' => ['nullable', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:50'],
             'short_bio' => ['nullable', 'string', 'max:1000'],
+            'bio' => ['nullable', 'string', 'max:20000'],
+            'qualifications' => ['nullable', 'string', 'max:5000'],
+            'skills_text' => ['nullable', 'string', 'max:2000'],
+            'meta_title' => ['nullable', 'string', 'max:255'],
+            'meta_description' => ['nullable', 'string', 'max:500'],
             'experience_years' => ['nullable', 'integer', 'min:0', 'max:80'],
             'order' => ['nullable', 'integer', 'min:0'],
             'status' => ['required', 'in:active,inactive'],
@@ -85,8 +90,29 @@ class TeamMemberController extends Controller
         ], $socialRules, $this->imageRules('photo', true)));
 
         $data['social_links'] = array_filter($data['social_links'] ?? []);
+        $data['skills'] = $this->parseSkills($data['skills_text'] ?? '');
+        unset($data['skills_text']);
         $data['is_featured'] = $request->boolean('is_featured');
 
         return $data;
+    }
+
+    /**
+     * "Solar Design | 90" lines to [['label' => 'Solar Design', 'percent' => 90], ...].
+     */
+    private function parseSkills(string $text): array
+    {
+        $skills = [];
+
+        foreach (preg_split('/\R/', $text) as $line) {
+            if (trim($line) === '') {
+                continue;
+            }
+
+            [$label, $percent] = array_pad(array_map('trim', explode('|', $line, 2)), 2, null);
+            $skills[] = ['label' => $label, 'percent' => max(0, min(100, (int) $percent))];
+        }
+
+        return $skills;
     }
 }

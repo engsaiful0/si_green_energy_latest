@@ -1,15 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Frontend\BlogController as FrontendBlogController;
+use App\Http\Controllers\Frontend\CompanyProfileController;
+use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PageController as FrontendPageController;
 use App\Http\Controllers\Frontend\ProductController as FrontendProductController;
-use App\Http\Controllers\Frontend\ServiceController as FrontendServiceController;
-use App\Http\Controllers\Frontend\BlogController as FrontendBlogController;
-use App\Http\Controllers\Frontend\ContactController;
-use App\Http\Controllers\Frontend\SearchController;
-use App\Http\Controllers\Frontend\HomeController;
-use App\Http\Controllers\Frontend\TeamController as FrontendTeamController;
 use App\Http\Controllers\Frontend\ProjectController as FrontendProjectController;
+use App\Http\Controllers\Frontend\SearchController;
+use App\Http\Controllers\Frontend\ServiceController as FrontendServiceController;
+use App\Http\Controllers\Frontend\SolutionController as FrontendSolutionController;
+use App\Http\Controllers\Frontend\TeamController as FrontendTeamController;
+use App\Http\Controllers\Frontend\TestimonialController as FrontendTestimonialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,19 +33,27 @@ Route::get('/renewable', function () {
     return view('frontend.pages.home-renewable');
 })->name('home.renewable');
 
-// About
-Route::get('/about', function () {
-    return view('frontend.pages.about');
-})->name('about');
+// About: Company Profile, Testimonials, Solar Design Engineers
+Route::get('/company-profile', [CompanyProfileController::class, 'show'])->name('company-profile');
+Route::redirect('/about', '/company-profile', 301)->name('about');
 
-// Products
-Route::get('/products', [FrontendProductController::class, 'index'])->name('products.index');
-Route::get('/products/category/{slug}', [FrontendProductController::class, 'category'])->name('products.category');
-Route::get('/products/{slug}', [FrontendProductController::class, 'show'])->name('products.show');
+Route::get('/testimonials', [FrontendTestimonialController::class, 'index'])->name('testimonials');
 
-// Services
-Route::get('/services', [FrontendServiceController::class, 'index'])->name('services.index');
-Route::get('/services/{slug}', [FrontendServiceController::class, 'show'])->name('services.show');
+Route::get('/team', [FrontendTeamController::class, 'index'])->defaults('columns', 3)->name('team.index');
+Route::get('/team/grid-2', [FrontendTeamController::class, 'index'])->defaults('columns', 2)->name('team.grid2');
+Route::get('/team/grid-3', [FrontendTeamController::class, 'index'])->defaults('columns', 4)->name('team.grid3');
+Route::get('/team/{slug}', [FrontendTeamController::class, 'show'])->name('team.show');
+
+// Catalogs: products, solutions, services (listing, category, details)
+foreach ([
+    'products' => FrontendProductController::class,
+    'solutions' => FrontendSolutionController::class,
+    'services' => FrontendServiceController::class,
+] as $prefix => $controller) {
+    Route::get("/{$prefix}", [$controller, 'index'])->name("{$prefix}.index");
+    Route::get("/{$prefix}/category/{slug}", [$controller, 'category'])->name("{$prefix}.category");
+    Route::get("/{$prefix}/{slug}", [$controller, 'show'])->name("{$prefix}.show");
+}
 
 // Pricing
 Route::get('/pricing', function () {
@@ -53,22 +65,14 @@ Route::get('/faq', function () {
     return view('frontend.pages.faq');
 })->name('faq');
 
-// Testimonials
-Route::get('/testimonials', function () {
-    return view('frontend.pages.testimonials');
-})->name('testimonials');
-
-// Team
-Route::get('/team', [FrontendTeamController::class, 'index'])->defaults('columns', 3)->name('team.index');
-Route::get('/team/grid-2', [FrontendTeamController::class, 'index'])->defaults('columns', 2)->name('team.grid2');
-Route::get('/team/grid-3', [FrontendTeamController::class, 'index'])->defaults('columns', 4)->name('team.grid3');
-
-// Projects
+// Projects (?category=slug filters the listing)
+Route::get('/projects', [FrontendProjectController::class, 'index'])->defaults('columns', 3)->name('projects.index');
 Route::get('/projects/2-columns', [FrontendProjectController::class, 'index'])->defaults('columns', 2)->name('projects.grid2');
 Route::get('/projects/3-columns', [FrontendProjectController::class, 'index'])->defaults('columns', 3)->name('projects.grid3');
 Route::get('/projects/4-columns', [FrontendProjectController::class, 'index'])->defaults('columns', 4)->name('projects.grid4');
+Route::get('/projects/{slug}', [FrontendProjectController::class, 'show'])->name('projects.show');
 
-// Blog
+// Blog (?q= searches)
 Route::get('/blog', [FrontendBlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/category/{slug}', [FrontendBlogController::class, 'category'])->name('blog.category');
 Route::get('/blog/tag/{slug}', [FrontendBlogController::class, 'tag'])->name('blog.tag');
@@ -76,7 +80,7 @@ Route::get('/blog/{slug}', [FrontendBlogController::class, 'show'])->name('blog.
 
 // Contact
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:6,1')->name('contact.store');
 
 Route::get('/contact-alt', function () {
     return view('frontend.pages.contact-alt');
@@ -84,13 +88,13 @@ Route::get('/contact-alt', function () {
 
 // Quote
 Route::get('/quote', [ContactController::class, 'quote'])->name('quote');
-Route::post('/quote', [ContactController::class, 'storeQuote'])->name('quote.store');
+Route::post('/quote', [ContactController::class, 'storeQuote'])->middleware('throttle:6,1')->name('quote.store');
 
 // Search
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 // Newsletter
-Route::post('/newsletter/subscribe', [ContactController::class, 'subscribe'])->name('newsletter.subscribe');
+Route::post('/newsletter/subscribe', [ContactController::class, 'subscribe'])->middleware('throttle:6,1')->name('newsletter.subscribe');
 
 // Privacy & Terms
 Route::get('/privacy', function () {
@@ -108,23 +112,27 @@ Route::get('/terms', function () {
 */
 
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\PageController;
-use App\Http\Controllers\Admin\ProductCategoryController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\ServiceCategoryController;
-use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogPostController;
-use App\Http\Controllers\Admin\SliderController;
-use App\Http\Controllers\Admin\HomepageSectionController;
+use App\Http\Controllers\Admin\ContactMessageController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PageContentController;
+use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\PartnerController;
+use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProjectCategoryController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ServiceCategoryController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\SolutionCategoryController;
+use App\Http\Controllers\Admin\SolutionController;
 use App\Http\Controllers\Admin\TeamMemberController;
 use App\Http\Controllers\Admin\TestimonialController;
-use App\Http\Controllers\Admin\PartnerController;
-use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     // Login routes (guest only)
@@ -150,12 +158,14 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Pages (Resource Routes)
     Route::resource('pages', PageController::class);
 
-    // Homepage Sections
-    Route::get('/homepage-sections', [HomepageSectionController::class, 'index'])->name('homepage-sections.index');
-    Route::put('/homepage-sections', [HomepageSectionController::class, 'arrange'])->name('homepage-sections.arrange');
-    Route::get('/homepage-sections/{section}/edit', [HomepageSectionController::class, 'edit'])->name('homepage-sections.edit');
-    Route::put('/homepage-sections/{section}', [HomepageSectionController::class, 'update'])->name('homepage-sections.update');
-    Route::post('/homepage-sections/{section}/reset', [HomepageSectionController::class, 'reset'])->name('homepage-sections.reset');
+    // Page CMS: home, company profile, contact, services/solutions/products, projects, blog, team, testimonials
+    Route::get('/seo', [PageContentController::class, 'pages'])->name('seo.index');
+    Route::get('/content/{page}', [PageContentController::class, 'index'])->name('content.index');
+    Route::put('/content/{page}', [PageContentController::class, 'arrange'])->name('content.arrange');
+    Route::get('/content/{page}/{section}/edit', [PageContentController::class, 'edit'])->name('content.edit');
+    Route::put('/content/{page}/{section}', [PageContentController::class, 'update'])->name('content.update');
+    Route::post('/content/{page}/{section}/reset', [PageContentController::class, 'reset'])->name('content.reset');
+    Route::redirect('/homepage-sections', '/admin/content/home')->name('homepage-sections.index');
 
     // Menus
     Route::get('/menus', function () {
@@ -163,22 +173,22 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     })->name('menus.index');
 
     // Sliders (Resource Routes)
-    Route::resource('sliders', SliderController::class);
+    Route::resource('sliders', SliderController::class)->except(['show']);
 
-    // Product Categories (Resource Routes)
-    Route::resource('product-categories', ProductCategoryController::class);
+    // Categories (shared category module)
+    Route::resource('product-categories', ProductCategoryController::class)->except(['show']);
+    Route::resource('solution-categories', SolutionCategoryController::class)->except(['show']);
+    Route::resource('service-categories', ServiceCategoryController::class)->except(['show']);
+    Route::resource('project-categories', ProjectCategoryController::class)->except(['show']);
 
-    // Products (Resource Routes)
-    Route::resource('products', ProductController::class);
-
-    // Service Categories (Resource Routes)
-    Route::resource('service-categories', ServiceCategoryController::class)->except(['show', 'create']);
-
-    // Services (Resource Routes)
+    // Products, solutions, services
+    Route::resource('products', ProductController::class)->except(['show']);
+    Route::resource('solutions', SolutionController::class)->except(['show']);
     Route::resource('services', ServiceController::class);
 
-    // Projects
+    // Projects (+ gallery images)
     Route::resource('projects', ProjectController::class)->except(['show']);
+    Route::delete('/projects/{project}/images/{image}', [ProjectController::class, 'destroyImage'])->name('projects.images.destroy');
 
     // Pricing
     Route::get('/pricing', function () {
@@ -194,7 +204,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Blog Posts (Resource Routes)
     Route::resource('blog-posts', BlogPostController::class);
 
-    // Team
+    // Team (Solar Design Engineers)
     Route::resource('team', TeamMemberController::class)->except(['show']);
 
     // Testimonials
@@ -208,10 +218,9 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
         return view('admin.faqs.index');
     })->name('faqs.index');
 
-    // Contacts
-    Route::get('/contacts', function () {
-        return view('admin.contacts.index');
-    })->name('contacts.index');
+    // Contact messages
+    Route::resource('contacts', ContactMessageController::class)->only(['index', 'show', 'update', 'destroy'])
+        ->parameters(['contacts' => 'message']);
 
     // Quotes
     Route::get('/quotes', function () {
@@ -231,10 +240,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Settings
     Route::get('/settings/general', [SettingController::class, 'general'])->name('settings.general');
     Route::put('/settings/general', [SettingController::class, 'updateGeneral'])->name('settings.general.update');
-
-    Route::get('/settings/seo', function () {
-        return view('admin.settings.seo');
-    })->name('settings.seo');
+    Route::redirect('/settings/seo', '/admin/seo')->name('settings.seo');
 
     // Users Management (Resource Routes)
     Route::resource('users', UserController::class);

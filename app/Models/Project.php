@@ -57,7 +57,7 @@ class Project extends Model
      */
     public function images()
     {
-        return $this->hasMany(ProjectImage::class);
+        return $this->hasMany(ProjectImage::class)->orderBy('order')->orderBy('id');
     }
 
     /**

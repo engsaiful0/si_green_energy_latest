@@ -15,7 +15,10 @@ class ContactMessage extends Model
         'phone',
         'subject',
         'message',
+        'ip_address',
+        'user_agent',
         'is_read',
+        'status',
         'replied_at',
     ];
 

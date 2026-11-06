@@ -1,6 +1,6 @@
 {{-- Project card (Slaze portfolio item). Used by the homepage gallery slider and project listings. --}}
 @php
-    $projectLink = $project->website_url ?: route('projects.grid4');
+    $projectLink = route('projects.show', $project->slug);
 @endphp
 <div class="portfolio__one-item {{ $class ?? '' }}">
     <div class="portfolio__one-item-image">

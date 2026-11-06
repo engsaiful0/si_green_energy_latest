@@ -10,6 +10,9 @@
             <p class="text-muted mb-0">Manage your blog posts</p>
         </div>
         <div>
+            <a href="{{ route('admin.content.index', 'blog') }}" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-th-large me-2"></i>Page Content
+            </a>
             <a href="{{ route('admin.blog-categories.index') }}" class="btn btn-secondary me-2">
                 <i class="fas fa-folder me-2"></i>Categories
             </a>
@@ -18,6 +21,26 @@
             </a>
         </div>
     </div>
+
+    <form method="GET" class="row g-2 mb-3">
+        <div class="col-md-4"><input type="search" name="search" class="form-control" placeholder="Search by title..." value="{{ request('search') }}"></div>
+        <div class="col-md-3">
+            <select name="category" class="form-select">
+                <option value="">All categories</option>
+                @foreach($categories as $category)
+                <option value="{{ $category->id }}" @selected((string) request('category') === (string) $category->id)>{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="status" class="form-select">
+                <option value="">Any status</option>
+                <option value="published" @selected(request('status') === 'published')>Published</option>
+                <option value="draft" @selected(request('status') === 'draft')>Draft (unpublished)</option>
+            </select>
+        </div>
+        <div class="col-md-2 d-grid"><button class="btn btn-outline-secondary" type="submit"><i class="fas fa-filter me-1"></i>Filter</button></div>
+    </form>
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -76,7 +99,8 @@
                                 </td>
                                 <td>
                                     @if($post->published_at)
-                                        <small>{{ $post->published_at->format('M d, Y') }}</small>
+                                        <small>{{ $post->published_at->format('M d, Y H:i') }}</small>
+                                        @if($post->status === 'published' && $post->published_at->isFuture())<span class="badge bg-info">Scheduled</span>@endif
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif

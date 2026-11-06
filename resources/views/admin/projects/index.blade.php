@@ -9,9 +9,13 @@
             <h1 class="h3 mb-0">Projects</h1>
             <p class="text-muted mb-0">Manage the project gallery</p>
         </div>
+        <div class="d-flex flex-wrap gap-2">
+        <a href="{{ route('admin.project-categories.index') }}" class="btn btn-outline-secondary"><i class="fas fa-folder me-2"></i>Categories</a>
+        <a href="{{ route('admin.content.index', 'projects') }}" class="btn btn-outline-secondary"><i class="fas fa-th-large me-2"></i>Page Content</a>
         <a href="{{ route('admin.projects.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-2"></i>Add Project
         </a>
+        </div>
     </div>
 
     @include('admin.partials.alerts')

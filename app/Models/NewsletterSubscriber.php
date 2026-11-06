@@ -12,14 +12,14 @@ class NewsletterSubscriber extends Model
     protected $fillable = [
         'email',
         'name',
-        'is_active',
-        'verified_at',
+        'status',
+        'ip_address',
+        'subscribed_at',
         'unsubscribed_at',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
-        'verified_at' => 'datetime',
+        'subscribed_at' => 'datetime',
         'unsubscribed_at' => 'datetime',
     ];
 }

@@ -14,6 +14,9 @@ class SiteSettings
 {
     private const CACHE_KEY = 'site_settings';
 
+    /** Per-request copy of all() (many views read the settings). */
+    private static ?array $resolved = null;
+
     public static function groups(): array
     {
         return [
@@ -68,6 +71,10 @@ class SiteSettings
      */
     public static function all(): array
     {
+        if (static::$resolved !== null) {
+            return static::$resolved;
+        }
+
         $saved = Cache::rememberForever(self::CACHE_KEY, function () {
             if (!Schema::hasTable('settings')) {
                 return [];
@@ -85,7 +92,7 @@ class SiteSettings
             }
         }
 
-        return $values;
+        return static::$resolved = $values;
     }
 
     public static function get(string $key, $default = null)
@@ -106,6 +113,7 @@ class SiteSettings
 
     public static function flush(): void
     {
+        static::$resolved = null;
         Cache::forget(self::CACHE_KEY);
     }
 

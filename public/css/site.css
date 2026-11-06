@@ -1,0 +1,93 @@
+/* ==========================================================================
+   SI Green Energy - overrides on top of the Slaze theme (style.css)
+   ========================================================================== */
+
+/* --- Main menu: 8 top-level items (theme spacing is sized for 5) --- */
+.header__area-menubar-right-btn .btn-one {
+  white-space: nowrap;
+}
+
+@media (min-width: 1400px) {
+  .header__area-menubar-center-menu ul li {
+    margin: 0 15px;
+  }
+  .header__area-menubar-center-menu ul li a {
+    font-size: 15px;
+  }
+  .header__area-menubar-center-menu ul li.menu-item-has-children > a {
+    margin-right: 6px;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .header__area-menubar-left-logo {
+    padding-right: 24px;
+  }
+  .header__area-menubar-center-menu ul li {
+    margin: 0 10px;
+  }
+  .header__area-menubar-center-menu ul li a {
+    font-size: 14px;
+  }
+  .header__area-menubar-center-menu ul li.menu-item-has-children > a {
+    margin-right: 6px;
+  }
+  .header__area-menubar-right-sidebar {
+    display: none;
+  }
+}
+
+/* Too narrow for the full menu: use the mobile menu (theme does this only below 992px). */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .header__area-menubar-center {
+    display: none;
+  }
+  .header__area-menubar-right-responsive-menu {
+    display: block;
+  }
+  .header__area-menubar-right-sidebar {
+    display: none;
+  }
+}
+
+/* --- Catalog / project category filters --- */
+.catalog-filter .nav,
+.portfolio__three-page .who__area-right-btn .nav {
+  row-gap: 12px;
+}
+
+/* --- Contact page: office cards --- */
+.office__card {
+  height: 100%;
+  padding: 35px 30px;
+  border: 1px solid var(--border-color-1, #E6E5DF);
+  background: var(--bg-white);
+}
+.office__card h6 {
+  margin-bottom: 15px;
+}
+.office__card ul li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 6px 0;
+}
+.office__card ul li i {
+  color: var(--primary-color-1);
+  width: 18px;
+  margin-top: 5px;
+}
+
+/* --- Contact page social links --- */
+.contact__two-social .social__icon ul {
+  display: flex;
+  gap: 10px;
+  padding: 0;
+}
+
+/* --- Project details: featured image fills the row whatever its proportions --- */
+.portfolio__details-image > img {
+  width: 100%;
+  max-height: 620px;
+  object-fit: cover;
+}

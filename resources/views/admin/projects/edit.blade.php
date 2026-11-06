@@ -22,4 +22,9 @@
         @include('admin.projects._form')
     </form>
 </div>
+@foreach($project->images as $image)
+<form id="delete-image-{{ $image->id }}" action="{{ route('admin.projects.images.destroy', [$project, $image]) }}" method="POST" class="d-none">
+    @csrf @method('DELETE')
+</form>
+@endforeach
 @endsection

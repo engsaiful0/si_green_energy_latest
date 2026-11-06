@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\IsCatalogItem;
 use App\Support\Media;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +12,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Service extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, IsCatalogItem;
+
+    public const FEATURES_COLUMN = 'benefits';
 
     protected $fillable = [
         'category_id',
@@ -58,15 +61,7 @@ class Service extends Model
         return $this->hasMany(ServiceImage::class);
     }
 
-    public function scopePublished(Builder $query): Builder
-    {
-        return $query->where('status', 'published');
-    }
 
-    public function imageUrl(): string
-    {
-        return Media::url($this->featured_image);
-    }
 
     /**
      * Benefits as newline-separated text (used by the admin form and service pages).

@@ -2,67 +2,28 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductCategory;
 
-class ProductController extends Controller
+class ProductController extends CatalogController
 {
-    /**
-     * Display a listing of products.
-     */
-    public function index()
+    protected function model(): string
     {
-        $products = Product::where('status', 'published')
-            ->with('category')
-            ->latest()
-            ->paginate(12);
-
-        $categories = ProductCategory::where('is_active', true)
-            ->withCount('products')
-            ->get();
-
-        return view('frontend.products.index', compact('products', 'categories'));
+        return Product::class;
     }
 
-    /**
-     * Display the specified product.
-     */
-    public function show($slug)
+    protected function categoryModel(): string
     {
-        $product = Product::where('slug', $slug)
-            ->where('status', 'published')
-            ->with(['category', 'images'])
-            ->firstOrFail();
-
-        $relatedProducts = Product::where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
-            ->where('status', 'published')
-            ->take(4)
-            ->get();
-
-        return view('frontend.products.show', compact('product', 'relatedProducts'));
+        return ProductCategory::class;
     }
 
-    /**
-     * Display products by category.
-     */
-    public function category($slug)
+    protected function prefix(): string
     {
-        $category = ProductCategory::where('slug', $slug)
-            ->where('is_active', true)
-            ->firstOrFail();
+        return 'products';
+    }
 
-        $products = Product::where('category_id', $category->id)
-            ->where('status', 'published')
-            ->with('category')
-            ->latest()
-            ->paginate(12);
-
-        $categories = ProductCategory::where('is_active', true)
-            ->withCount('products')
-            ->get();
-
-        return view('frontend.products.index', compact('products', 'categories', 'category'));
+    protected function singular(): string
+    {
+        return 'Product';
     }
 }

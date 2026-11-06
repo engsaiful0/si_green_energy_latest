@@ -2,45 +2,28 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 
-class ServiceController extends Controller
+class ServiceController extends CatalogController
 {
-    /**
-     * Display a listing of services.
-     */
-    public function index()
+    protected function model(): string
     {
-        $services = Service::where('status', 'published')
-            ->with('category')
-            ->latest()
-            ->paginate(12);
-
-        $categories = ServiceCategory::where('is_active', true)
-            ->withCount('services')
-            ->get();
-
-        return view('frontend.services.index', compact('services', 'categories'));
+        return Service::class;
     }
 
-    /**
-     * Display the specified service.
-     */
-    public function show($slug)
+    protected function categoryModel(): string
     {
-        $service = Service::where('slug', $slug)
-            ->where('status', 'published')
-            ->with(['category', 'images'])
-            ->firstOrFail();
+        return ServiceCategory::class;
+    }
 
-        $relatedServices = Service::where('category_id', $service->category_id)
-            ->where('id', '!=', $service->id)
-            ->where('status', 'published')
-            ->take(3)
-            ->get();
+    protected function prefix(): string
+    {
+        return 'services';
+    }
 
-        return view('frontend.services.show', compact('service', 'relatedServices'));
+    protected function singular(): string
+    {
+        return 'Service';
     }
 }

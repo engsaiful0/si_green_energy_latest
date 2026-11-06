@@ -12,12 +12,29 @@
             <div class="header__area-menubar-center">
                 <div class="header__area-menubar-center-menu">
                     <ul id="mobilemenu">
-                        <li><a href="{{ route('home') }}">Home</a></li>
-                        <li><a href="{{ route('about') }}">About</a></li>
-                        <li><a href="{{ route('products.index') }}">Products</a></li>
-                        <li><a href="{{ route('services.index') }}">Services</a></li>
-                        <li><a href="{{ route('blog.index') }}">Blog</a></li>
-                        <li><a href="{{ route('contact') }}">Contact</a></li>
+                        <li class="{{ request()->routeIs('home') ? 'active' : '' }}"><a href="{{ route('home') }}">Home</a></li>
+                        <li class="menu-item-has-children {{ request()->routeIs('company-profile', 'testimonials', 'team.*') ? 'active' : '' }}"><a href="{{ route('company-profile') }}">About</a>
+                            <ul class="sub-menu">
+                                <li><a href="{{ route('company-profile') }}">Company Profile</a></li>
+                                <li><a href="{{ route('testimonials') }}">Testimonial</a></li>
+                                <li><a href="{{ route('team.index') }}">Solar Design Engineer</a></li>
+                            </ul>
+                        </li>
+                        @foreach($navCatalogs as $catalog)
+                        <li class="{{ $catalog['categories']->isNotEmpty() ? 'menu-item-has-children' : '' }} {{ request()->routeIs($catalog['prefix'] . '.*') ? 'active' : '' }}"><a href="{{ route($catalog['prefix'] . '.index') }}">{{ $catalog['label'] }}</a>
+                            @if($catalog['categories']->isNotEmpty())
+                            <ul class="sub-menu">
+                                <li><a href="{{ route($catalog['prefix'] . '.index') }}">All {{ $catalog['label'] }}</a></li>
+                                @foreach($catalog['categories'] as $category)
+                                <li><a href="{{ route($catalog['prefix'] . '.category', $category->slug) }}">{{ $category->name }}</a></li>
+                                @endforeach
+                            </ul>
+                            @endif
+                        </li>
+                        @endforeach
+                        <li class="{{ request()->routeIs('projects.*') ? 'active' : '' }}"><a href="{{ route('projects.index') }}">Projects</a></li>
+                        <li class="{{ request()->routeIs('blog.*') ? 'active' : '' }}"><a href="{{ route('blog.index') }}">Blog</a></li>
+                        <li class="{{ request()->routeIs('contact') ? 'active' : '' }}"><a href="{{ route('contact') }}">Contact</a></li>
                     </ul>
                 </div>
             </div>

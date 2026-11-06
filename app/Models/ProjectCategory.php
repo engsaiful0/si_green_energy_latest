@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\IsCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ProjectCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, IsCategory;
 
     protected $fillable = [
         'name',
         'slug',
         'description',
+        'image',
         'color',
         'is_active',
         'order',
@@ -26,6 +28,11 @@ class ProjectCategory extends Model
     /**
      * Get the projects in this category.
      */
+    public function items()
+    {
+        return $this->projects();
+    }
+
     public function projects()
     {
         return $this->hasMany(Project::class, 'category_id');

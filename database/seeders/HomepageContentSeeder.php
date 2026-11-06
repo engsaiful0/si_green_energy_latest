@@ -12,7 +12,7 @@ use App\Models\Slider;
 use App\Models\TeamMember;
 use App\Models\Testimonial;
 use App\Models\User;
-use App\Support\HomepageSections;
+use App\Support\PageSections;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -24,7 +24,9 @@ class HomepageContentSeeder extends Seeder
 {
     public function run(): void
     {
-        HomepageSections::ensureExists();
+        foreach (array_keys(PageSections::pages()) as $page) {
+            PageSections::ensureExists($page);
+        }
 
         $this->sliders();
         $this->services();
