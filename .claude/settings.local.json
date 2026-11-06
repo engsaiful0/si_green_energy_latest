@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git commit:*)",
+      "Bash(php -r:*)",
+      "Bash(curl:*)",
+      "Bash(taskkill:*)",
+      "Bash(nul)",
+      "Bash(powershell -Command \"Remove-Item -Path ''public'' -Force -Recurse\")",
+      "Bash(then cp -r resources/slaze/assets public/)",
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(php artisan:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
