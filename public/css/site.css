@@ -239,3 +239,51 @@ p {
 .mfp-title {
   text-align: left;
 }
+
+/* --- Scrolling text strip (services / solutions / products pages): smaller, and spaced from the CTA --- */
+.text__slider {
+  padding: 55px 0;
+}
+.text__slider ul li a {
+  font-size: 44px;
+  line-height: 54px;
+}
+.text__slider ul li a span {
+  margin: 0 40px;
+}
+.text__slider ul li a span img {
+  max-width: 40px;
+}
+.text__slider + .footer__cta {
+  margin-top: 100px;
+}
+@media (max-width: 991px) {
+  .text__slider ul li a {
+    font-size: 34px;
+    line-height: 44px;
+  }
+}
+@media (max-width: 667px) {
+  .text__slider {
+    padding: 40px 0;
+  }
+  .text__slider ul li a {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .text__slider ul li a span {
+    margin: 0 22px;
+  }
+  .text__slider ul li a span img {
+    max-width: 28px;
+  }
+  .text__slider + .footer__cta {
+    margin-top: 60px;
+  }
+}
+
+/* --- Gallery grid: the lightbox link fills the fixed-height card so all images match --- */
+.gallery__grid .portfolio__two-item > a.img-popup {
+  display: block;
+  height: 100%;
+}

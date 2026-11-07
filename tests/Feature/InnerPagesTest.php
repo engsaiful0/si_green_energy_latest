@@ -33,7 +33,7 @@ class InnerPagesTest extends TestCase
         parent::setUp();
 
         $this->admin = User::factory()->create();
-        $this->seed(SiGreenEnergyContentSeeder::class);
+        $this->seed([SiGreenEnergyContentSeeder::class, \Database\Seeders\ProductCatalogSeeder::class]);
 
         // The seeder adds no team members, projects or testimonials (real ones are added by admins).
         TeamMember::create(['full_name' => 'Test Engineer', 'slug' => 'test-engineer', 'position' => 'Solar Design Engineer', 'photo' => 'img/team/team-1.jpg', 'status' => 'active']);
