@@ -13,7 +13,7 @@
         </div>
         <div class="row">
             @foreach($items as $service)
-            <div class="col-lg-4 col-md-6">
+            <div class="col-12 col-lg-4">
                 <div class="service__one-item" @if($c['card_background']) style="background-image: url('{{ Media::url($c['card_background']) }}');" @endif>
                     <div class="service__one-item-icon">
                         <i class="{{ $service->icon ?: 'flaticon-solar-energy' }}"></i>

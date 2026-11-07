@@ -17,7 +17,7 @@
                                 @if($slide->subtitle)
                                 <span class="subtitle-one" data-animation="fadeInUp" data-delay=".3s">{{ $slide->subtitle }}</span>
                                 @endif
-                                <h1 data-animation="fadeInUp" data-delay=".6s">{!! nl2br(e($slide->title)) !!}</h1>
+                                <h1 class="banner__one-title" data-animation="fadeInUp" data-delay=".6s">{{ preg_replace('/\s+/', ' ', trim($slide->title)) }}</h1>
                                 @if($slide->description)
                                 <p data-animation="fadeInUp" data-delay=".9s">{{ $slide->description }}</p>
                                 @endif

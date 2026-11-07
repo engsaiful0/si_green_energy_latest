@@ -173,7 +173,7 @@ p {
   text-align: inherit;
 }
 /* Short card texts read better left-aligned than stretched. */
-.service__one-item p, .service__two-item p, .features__one-right-item p,
+.features__one-right-item p,
 .consultation__area-right-list-item p, .faq__one-title p {
   text-align: left;
 }
@@ -286,4 +286,157 @@ p {
 .gallery__grid .portfolio__two-item > a.img-popup {
   display: block;
   height: 100%;
+}
+
+/* --- Catalog cards (services / solutions / products): every image has the same size --- */
+.service__two-item-image {
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--color-3, #F8F8F8);
+}
+.service__two-item-image a {
+  display: block;
+  height: 100%;
+}
+.service__two-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* --- Catalog card descriptions (products / services / solutions): justified --- */
+.service__two-item-content p {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* ==========================================================================
+   Homepage hero: full-width image, 30% lower than the theme (~1054px -> ~740px),
+   25px heading. Text sits on a dark overlay so it stays readable on any photo.
+   ========================================================================== */
+.banner__one-image {
+  position: relative;
+  min-height: 740px;
+}
+.banner__one-shape {
+  display: none;
+}
+.banner__one-image .banner__one-right {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+.banner__one-image .banner__one-right img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.banner__one-image .banner__one-right::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(17, 24, 33, 0.82) 0%, rgba(17, 24, 33, 0.6) 45%, rgba(17, 24, 33, 0.15) 100%);
+}
+.banner__one-content {
+  padding: 120px 0 230px;
+}
+.banner__one-content h1 {
+  font-size: 25px;
+  line-height: 35px;
+  margin-bottom: 20px;
+  color: var(--text-white, #fff);
+}
+.banner__one-content .subtitle-one,
+.banner__one-content p {
+  color: var(--text-white, #fff);
+}
+.banner__one-content p {
+  font-size: 18px;
+  line-height: 30px;
+  margin-bottom: 32px;
+}
+@media (max-width: 1199px) {
+  .banner__one-content h1 {
+    font-size: 25px;
+    line-height: 35px;
+  }
+}
+@media (max-width: 991px) {
+  .banner__one-image {
+    min-height: 620px;
+  }
+  .banner__one-image .banner__one-right {
+    position: absolute;
+    width: 100%;
+  }
+  .banner__one-image .banner__one-right img {
+    display: block;
+  }
+  .banner__one-image .banner__one-right::after {
+    background: rgba(17, 24, 33, 0.7);
+  }
+}
+@media (max-width: 575px) {
+  .banner__one-image {
+    min-height: 0;
+  }
+  .banner__one-content {
+    padding: 90px 0;
+  }
+  .banner__one-content h1 {
+    font-size: 25px;
+    line-height: 35px;
+  }
+  .banner__one-content p {
+    font-size: 16px;
+    line-height: 28px;
+  }
+}
+
+/* Hero heading on one line (line breaks in the CMS title are shown as spaces). */
+@media (min-width: 768px) {
+  .banner__one-content h1.banner__one-title {
+    white-space: nowrap;
+  }
+}
+
+/* --- Homepage "What We Do" service cards: justified descriptions --- */
+.service__one-item-content p {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* --- Homepage "Why Choose Us": feature cards stack full width (col-12) on small devices --- */
+@media (max-width: 767px) {
+  .choose__us-area-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  .choose__us-area-list-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    padding: 25px 25px;
+  }
+  .choose__us-area-list-item > i {
+    flex-shrink: 0;
+  }
+  .choose__us-area-list-item-bottom {
+    margin-top: 0;
+  }
+  .choose__us-area-list-item-bottom h6 {
+    max-width: none;
+  }
+  .choose__us-area-image {
+    height: 320px;
+  }
 }
