@@ -1,11 +1,14 @@
-
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
     RewriteEngine On
-    RewriteBase /
+
+    # No RewriteBase: the same file works in a sub-folder (http://localhost/si_green_energy/)
+    # and at a domain root (https://example.com/). BASE = the folder this file is in, as a URL.
+    RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
+    RewriteRule ^(.*)$ - [E=BASE:%1]
 
     # Block access to sensitive Laravel directories
     RewriteRule ^(app|bootstrap|config|database|resources|routes|tests|vendor|node_modules)(/|$) - [F,L,NC]
@@ -18,11 +21,11 @@
     # Allow only CMS uploads inside storage
     RewriteRule ^storage/(?!uploads/) - [F,L,NC]
 
-    # Redirect /public URLs to root
-    RewriteCond %{THE_REQUEST} \s/+public/ [NC]
-    RewriteRule ^public/(.*)$ /$1 [R=301,L]
+    # Redirect /public/... URLs to the same URL without "public"
+    RewriteCond %{THE_REQUEST} \s\S*/public/ [NC]
+    RewriteRule ^public/(.*)$ %{ENV:BASE}$1 [R=301,L]
 
-    # Serve public assets
+    # Serve public assets (css, js, images, fonts, uploads) from /public
     RewriteRule ^(css|js|img|images|font|fonts|webfonts|storage)(/.*)?$ public/$0 [L,NC]
 
     # Serve favicon and robots.txt
