@@ -36,6 +36,8 @@
                         <li class="{{ request()->routeIs('projects.*') ? 'active' : '' }}"><a href="{{ route('projects.index') }}">Projects</a></li>
                         <li class="{{ request()->routeIs('blog.*') ? 'active' : '' }}"><a href="{{ route('blog.index') }}">Blog</a></li>
                         <li class="{{ request()->routeIs('contact') ? 'active' : '' }}"><a href="{{ route('contact') }}">Contact</a></li>
+                        {{-- Shown only in the mobile menu (the desktop header has the Solar Calculator button). --}}
+                        <li class="menu-mobile-only {{ request()->routeIs('solar-calculator') ? 'active' : '' }}"><a href="{{ route('solar-calculator') }}">Solar Calculator</a></li>
                     </ul>
                 </div>
             </div>

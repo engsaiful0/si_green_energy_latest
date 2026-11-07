@@ -47,13 +47,13 @@
             </div>
             <div class="col-md-6 mb-30">
                 <div class="contact__form-area-item">
-                    <input type="text" name="subject" value="{{ old('subject') }}" placeholder="{{ $labels['subject_placeholder'] ?? 'Subject' }}" maxlength="255" aria-label="{{ $labels['subject_placeholder'] ?? 'Subject' }}">
+                    <input type="text" name="subject" value="{{ old('subject', \Illuminate\Support\Str::limit((is_string(request()->query('subject')) ? request()->query('subject') : ''), 200, '')) }}" placeholder="{{ $labels['subject_placeholder'] ?? 'Subject' }}" maxlength="255" aria-label="{{ $labels['subject_placeholder'] ?? 'Subject' }}">
                 </div>
             </div>
             @endif
             <div class="col-md-12 mb-30">
                 <div class="contact__form-area-item">
-                    <textarea name="message" placeholder="{{ $labels['message_placeholder'] ?? 'Message' }}" required maxlength="5000" aria-label="{{ $labels['message_placeholder'] ?? 'Message' }}">{{ old('message') }}</textarea>
+                    <textarea name="message" placeholder="{{ $labels['message_placeholder'] ?? 'Message' }}" required maxlength="5000" aria-label="{{ $labels['message_placeholder'] ?? 'Message' }}">{{ old('message', \Illuminate\Support\Str::limit((is_string(request()->query('message')) ? request()->query('message') : ''), 4000, '')) }}</textarea>
                 </div>
             </div>
             <div class="col-md-12">

@@ -77,3 +77,7 @@ The content does not state specific savings, payback periods, returns on investm
 - ABB S800PV-S: https://cdn.shopify.com/s/files/1/0755/7165/9042/files/ABB_miniature_circuit_breaker_s800PV.pdf
 
 Only two street light products are listed: no third product with verifiable manufacturer information was confirmed.
+
+## Solar Calculator
+- The calculator at `/solar-calculator` uses the sizing method of the public calculator at https://solar.anwar.bd/ (25% inverter headroom, 50% / 85% battery depth of discharge, 75% system efficiency, MPPT and hybrid efficiency factors, 60 A per charge controller). Its results were checked against that calculator on 4,000 random inputs and matched exactly.
+- **Cost rates are placeholders** taken from the reference calculator (for example panels 22 ৳/W, LiFePO4 25,000 ৳/kWh). Update them to Si Green Energy's current prices under Admin › Website Pages › Solar Calculator › Calculator Texts & Cost Rates.

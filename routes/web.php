@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\BlogController as FrontendBlogController;
 use App\Http\Controllers\Frontend\CompanyProfileController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\GalleryController as FrontendGalleryController;
+use App\Http\Controllers\Frontend\SolarCalculatorController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\LegalPageController;
 use App\Http\Controllers\Frontend\PageController as FrontendPageController;
@@ -41,6 +42,9 @@ Route::redirect('/about', '/company-profile', 301)->name('about');
 
 Route::get('/testimonials', [FrontendTestimonialController::class, 'index'])->name('testimonials');
 Route::get('/gallery', [FrontendGalleryController::class, 'index'])->name('gallery');
+
+// Solar Calculator
+Route::get('/solar-calculator', [SolarCalculatorController::class, 'index'])->name('solar-calculator');
 
 Route::get('/team', [FrontendTeamController::class, 'index'])->defaults('columns', 3)->name('team.index');
 Route::get('/team/grid-2', [FrontendTeamController::class, 'index'])->defaults('columns', 2)->name('team.grid2');

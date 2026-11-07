@@ -38,6 +38,7 @@ class PageSections
         'team' => Pages\TeamPage::class,
         'testimonials' => Pages\TestimonialsPage::class,
         'gallery' => Pages\GalleryPage::class,
+        'solar-calculator' => Pages\SolarCalculatorPage::class,
         'privacy' => Pages\PrivacyPage::class,
         'terms' => Pages\TermsPage::class,
     ];

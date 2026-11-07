@@ -440,3 +440,13 @@ p {
     height: 320px;
   }
 }
+
+/* --- "Solar Calculator" menu item: mobile menu only (desktop shows the header button) --- */
+.header__area-menubar-center-menu .menu-mobile-only {
+  display: none;
+}
+@media (min-width: 1400px) {
+  .header__area-menubar-center-menu ul li {
+    margin: 0 12px;
+  }
+}

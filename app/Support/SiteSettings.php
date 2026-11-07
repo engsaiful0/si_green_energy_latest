@@ -36,8 +36,8 @@ class SiteSettings
                 'address_link' => ['label' => 'Map Link', 'type' => 'url', 'default' => Company::MAP_LINK],
             ],
             'Header' => [
-                'header_button_text' => ['label' => 'Header Button Text', 'type' => 'text', 'default' => 'Get a Free Quote'],
-                'header_button_link' => ['label' => 'Header Button Link', 'type' => 'url', 'default' => '/contact'],
+                'header_button_text' => ['label' => 'Header Button Text', 'type' => 'text', 'default' => 'Solar Calculator'],
+                'header_button_link' => ['label' => 'Header Button Link', 'type' => 'url', 'default' => '/solar-calculator'],
                 'sidebar_text' => ['label' => 'Side Panel Text', 'type' => 'textarea', 'default' => 'Si Green Energy plans, supplies and installs solar power systems for homes, businesses and industry, with engineering support from the first site survey to long-term maintenance.'],
             ],
             'Social Links' => [

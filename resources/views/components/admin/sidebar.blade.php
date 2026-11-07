@@ -86,6 +86,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link {{ $isContent('solar-calculator') ? 'active' : '' }}" href="{{ route('admin.content.index', 'solar-calculator') }}">
+                    <i class="fas fa-calculator"></i> Solar Calculator
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ $isContent('privacy') ? 'active' : '' }}" href="{{ route('admin.content.index', 'privacy') }}">
                     <i class="fas fa-user-shield"></i> Privacy Policy
                 </a>

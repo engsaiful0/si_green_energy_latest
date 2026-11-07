@@ -1,30 +1,35 @@
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
     RewriteEngine On
-    RewriteBase /si_green_energy/
+    RewriteBase /
 
-    # Block sensitive application paths.
-    RewriteRule ^(app|bootstrap|config|database|resources|routes|tests|vendor|node_modules)/ - [F,L]
-    # Only CMS uploads are public under /storage (served from public/storage -> storage/app/public).
-    RewriteRule ^storage/(?!uploads/) - [F,L]
+    # Block access to sensitive Laravel directories
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|tests|vendor|node_modules)(/|$) - [F,L,NC]
 
-    # Redirect /public/... to /... so the URL never needs "public"
-    RewriteCond %{THE_REQUEST} \s/si_green_energy/public/ [NC]
-    RewriteRule ^public/(.*)$ $1 [R=301,L]
+    # Protect sensitive files
+    <FilesMatch "^(\.env|artisan|composer\.(json|lock)|package(-lock)?\.json|phpunit\.xml)$">
+        Require all denied
+    </FilesMatch>
 
-    # Serve CSS, JS, images and other files that live in /public
-    RewriteRule ^(css|js|img|font|fonts|webfonts|vendor|storage)(/.*)?$ public/$0 [L]
-    RewriteRule ^(favicon\.ico|robots\.txt)$ public/$0 [L]
+    # Allow only CMS uploads inside storage
+    RewriteRule ^storage/(?!uploads/) - [F,L,NC]
 
-    # Front controller (project-root index.php keeps the base path without /public)
-    RewriteCond %{REQUEST_FILENAME} !-d
+    # Redirect /public URLs to root
+    RewriteCond %{THE_REQUEST} \s/+public/ [NC]
+    RewriteRule ^public/(.*)$ /$1 [R=301,L]
+
+    # Serve public assets
+    RewriteRule ^(css|js|img|images|font|fonts|webfonts|storage)(/.*)?$ public/$0 [L,NC]
+
+    # Serve favicon and robots.txt
+    RewriteRule ^(favicon\.ico|robots\.txt)$ public/$1 [L,NC]
+
+    # Laravel front controller
     RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^ index.php [L]
 </IfModule>
-
-<FilesMatch "^(\.env|artisan|composer\.(json|lock)|package(-lock)?\.json|phpunit\.xml)$">
-    Require all denied
-</FilesMatch>
